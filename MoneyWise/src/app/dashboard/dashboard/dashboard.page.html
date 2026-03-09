@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>MoneyWise</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="welcome" *ngIf="usuario">
+    <ion-text color="medium">Hola, <strong>{{ usuario.nombre }}</strong> 👋</ion-text>
+  </div>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <app-dashboard-card
+          titulo="Saldo Actual"
+          [monto]="resumen.saldoActual"
+          tipo="saldo"
+          icono="wallet">
+        </app-dashboard-card>
+      </ion-col>
+      <ion-col size="6">
+        <app-dashboard-card
+          titulo="Ingresos del Mes"
+          [monto]="resumen.totalIngresosMes"
+          tipo="ingreso"
+          icono="arrow-up-circle">
+        </app-dashboard-card>
+      </ion-col>
+      <ion-col size="6">
+        <app-dashboard-card
+          titulo="Gastos del Mes"
+          [monto]="resumen.totalGastosMes"
+          tipo="gasto"
+          icono="arrow-down-circle">
+        </app-dashboard-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <div class="section-title ion-padding-top">
+    <h4>Gastos por Categoría</h4>
+  </div>
+
+  <app-empty-state
+    *ngIf="resumen.gastosPorCategoria.length === 0"
+    mensaje="No hay gastos este mes"
+    icono="bar-chart-outline"
+    accion="Agregar Transacción">
+  </app-empty-state>
+
+  <app-progress-bar-category
+    *ngFor="let g of resumen.gastosPorCategoria"
+    [categoria]="g.categoria"
+    [porcentaje]="g.porcentaje"
+    [color]="g.color"
+    [monto]="g.monto">
+  </app-progress-bar-category>
+</ion-content>

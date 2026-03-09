@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Transacciones</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="abrirFormulario()">
+        <ion-icon slot="icon-only" name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <app-filter-bar
+    [tipoSeleccionado]="tipoFiltro"
+    [categoriaSeleccionada]="categoriaFiltro"
+    (onTipoChange)="tipoFiltro = $event"
+    (onCategoriaChange)="categoriaFiltro = $event"
+    (onBuscarChange)="textoBusqueda = $event">
+  </app-filter-bar>
+
+  <app-empty-state
+    *ngIf="(transacciones | filterByType:tipoFiltro | filterByCategory:categoriaFiltro | searchByText:textoBusqueda).length === 0"
+    mensaje="No hay transacciones"
+    icono="receipt-outline"
+    accion="Agregar primera transacción"
+    (onAccion)="abrirFormulario()">
+  </app-empty-state>
+
+  <ion-list>
+    <app-transaction-item
+      *ngFor="let t of transacciones | filterByType:tipoFiltro | filterByCategory:categoriaFiltro | searchByText:textoBusqueda"
+      [transaccion]="t"
+      (onClick)="verDetalle(t.id)">
+    </app-transaction-item>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="abrirFormulario()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

@@ -1,0 +1,33 @@
+<ion-content class="ion-padding login-content">
+  <div class="login-header">
+    <ion-icon name="wallet" color="primary" style="font-size: 64px;"></ion-icon>
+    <h1>MoneyWise</h1>
+    <p>Controla tus finanzas personales</p>
+  </div>
+
+  <form [formGroup]="form">
+    <ion-item [class.ion-invalid]="form.get('email')?.invalid && form.get('email')?.touched">
+      <ion-label position="floating">Email</ion-label>
+      <ion-input type="email" formControlName="email" placeholder="tu@email.com"></ion-input>
+      <ion-note slot="error">Ingresa un email válido</ion-note>
+    </ion-item>
+
+    <ion-item [class.ion-invalid]="form.get('password')?.invalid && form.get('password')?.touched">
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input type="password" formControlName="password" placeholder="Tu contraseña"></ion-input>
+      <ion-note slot="error">La contraseña es requerida</ion-note>
+    </ion-item>
+
+    <div class="ion-padding-top">
+      <ion-button expand="block" (click)="login()">
+        <ion-icon slot="start" name="log-in"></ion-icon>
+        Iniciar Sesión
+      </ion-button>
+    </div>
+  </form>
+
+  <div class="ion-text-center ion-padding-top">
+    <ion-text color="medium">¿No tienes cuenta?</ion-text>
+    <ion-button fill="clear" (click)="irARegistro()">Regístrate</ion-button>
+  </div>
+</ion-content>

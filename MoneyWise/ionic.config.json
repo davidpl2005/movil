@@ -1,0 +1,7 @@
+{
+  "name": "MoneyWise",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

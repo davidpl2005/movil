@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="irALogin()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Crear Cuenta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="form">
+    <ion-item [class.ion-invalid]="form.get('nombre')?.invalid && form.get('nombre')?.touched">
+      <ion-label position="floating">Nombre completo</ion-label>
+      <ion-input type="text" formControlName="nombre" placeholder="Tu nombre"></ion-input>
+      <ion-note slot="error">El nombre es requerido</ion-note>
+    </ion-item>
+
+    <ion-item [class.ion-invalid]="form.get('email')?.invalid && form.get('email')?.touched">
+      <ion-label position="floating">Email</ion-label>
+      <ion-input type="email" formControlName="email" placeholder="tu@email.com"></ion-input>
+      <ion-note slot="error">Ingresa un email válido</ion-note>
+    </ion-item>
+
+    <ion-item [class.ion-invalid]="form.get('password')?.invalid && form.get('password')?.touched">
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input type="password" formControlName="password" placeholder="Mínimo 6 caracteres"></ion-input>
+      <ion-note slot="error">Mínimo 6 caracteres</ion-note>
+    </ion-item>
+
+    <div class="ion-padding-top">
+      <ion-button expand="block" (click)="registrar()">
+        <ion-icon slot="start" name="person-add"></ion-icon>
+        Crear Cuenta
+      </ion-button>
+    </div>
+  </form>
+</ion-content>

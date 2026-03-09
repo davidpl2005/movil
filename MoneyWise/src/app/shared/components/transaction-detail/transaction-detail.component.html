@@ -1,0 +1,46 @@
+<ion-card>
+  <ion-card-header>
+    <ion-grid>
+      <ion-row class="ion-align-items-center">
+        <ion-col size="2">
+          <app-category-icon [categoria]="transaccion.categoria"></app-category-icon>
+        </ion-col>
+        <ion-col>
+          <ion-card-title>
+            <app-amount-display [monto]="transaccion.monto" [tipo]="transaccion.tipo" tamano="large"></app-amount-display>
+          </ion-card-title>
+          <ion-card-subtitle>{{ transaccion.fecha | dateFormat }}</ion-card-subtitle>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-list>
+      <ion-item>
+        <ion-label><strong>Tipo</strong></ion-label>
+        <ion-badge slot="end" [color]="transaccion.tipo === 'ingreso' ? 'success' : 'danger'">
+          {{ transaccion.tipo | titlecase }}
+        </ion-badge>
+      </ion-item>
+      <ion-item>
+        <ion-label><strong>Categoría</strong></ion-label>
+        <app-category-badge slot="end" [categoria]="transaccion.categoria"></app-category-badge>
+      </ion-item>
+      <ion-item *ngIf="transaccion.descripcion">
+        <ion-label class="ion-text-wrap"><strong>Descripción</strong><br/>{{ transaccion.descripcion }}</ion-label>
+      </ion-item>
+      <ion-item *ngIf="transaccion.comprobante">
+        <ion-label><strong>Comprobante</strong></ion-label>
+        <app-photo-preview slot="end" [src]="transaccion.comprobante" size="medium"></app-photo-preview>
+      </ion-item>
+    </ion-list>
+    <div class="action-buttons">
+      <ion-button expand="block" fill="outline" (click)="onEdit.emit()">
+        <ion-icon slot="start" name="create"></ion-icon>Editar
+      </ion-button>
+      <ion-button expand="block" fill="outline" color="danger" (click)="onDelete.emit()">
+        <ion-icon slot="start" name="trash"></ion-icon>Eliminar
+      </ion-button>
+    </div>
+  </ion-card-content>
+</ion-card>

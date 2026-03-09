@@ -1,0 +1,5 @@
+<ion-text
+  [color]="tipo === 'ingreso' ? 'success' : tipo === 'gasto' ? 'danger' : 'dark'"
+  [class]="'amount-' + tamano">
+  {{ tipo === 'gasto' ? '-' : tipo === 'ingreso' ? '+' : '' }}{{ monto | currencyFormat }}
+</ion-text>

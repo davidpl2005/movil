@@ -1,0 +1,9 @@
+<div [class]="'photo-preview photo-' + size" (click)="onClick.emit()">
+  <ion-thumbnail *ngIf="size === 'small'">
+    <ion-img [src]="src"></ion-img>
+  </ion-thumbnail>
+  <ion-avatar *ngIf="size === 'medium'">
+    <ion-img [src]="src"></ion-img>
+  </ion-avatar>
+  <ion-img *ngIf="size === 'large'" [src]="src" class="photo-large"></ion-img>
+</div>

@@ -1,0 +1,162 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+/**
+ * Ionic Dark Mode
+ * -----------------------------------------------------
+ * For more info, please see:
+ * https://ionicframework.com/docs/theming/dark-mode
+ */
+
+/* @import "@ionic/angular/css/palettes/dark.always.css"; */
+/* @import "@ionic/angular/css/palettes/dark.class.css"; */
+@import "@ionic/angular/css/palettes/dark.system.css";
+
+// Login page
+.login-content {
+  --background: var(--ion-color-light);
+}
+
+.login-header {
+  text-align: center;
+  padding: 40px 0 24px;
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--ion-color-primary);
+    margin: 8px 0 4px;
+  }
+
+  p {
+    color: var(--ion-color-medium);
+    margin: 0;
+  }
+}
+
+// Dashboard cards
+.card-ingreso { --background: #f0fff4; }
+.card-gasto   { --background: #fff5f5; }
+.card-saldo   { --background: #f0f4ff; }
+
+.amount-ingreso { color: var(--ion-color-success); font-size: 1.4rem; font-weight: 700; }
+.amount-gasto   { color: var(--ion-color-danger);  font-size: 1.4rem; font-weight: 700; }
+.amount-saldo   { color: var(--ion-color-primary); font-size: 1.4rem; font-weight: 700; }
+
+// Amount display sizes
+.amount-small  { font-size: 0.85rem; font-weight: 600; }
+.amount-medium { font-size: 1rem;    font-weight: 600; }
+.amount-large  { font-size: 1.5rem;  font-weight: 700; }
+
+// Progress bar category
+.progress-item {
+  margin-bottom: 12px;
+
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 4px;
+    font-size: 0.85rem;
+  }
+}
+
+// Empty state
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+
+  ion-icon { font-size: 64px; margin-bottom: 16px; }
+  p        { font-size: 1rem; margin-bottom: 16px; }
+}
+
+// Photo components
+.photo-selector {
+  .photo-preview-container {
+    margin-bottom: 12px;
+    .preview-img {
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+  }
+  .photo-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+}
+
+.photo-large {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.full-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+// Category icon
+.cat-icon-small  { width: 32px;  height: 32px;  display: flex; align-items: center; justify-content: center; }
+.cat-icon-medium { width: 48px;  height: 48px;  display: flex; align-items: center; justify-content: center; }
+
+// Action buttons
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+// Section title
+.section-title h4 {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--ion-color-dark);
+  margin: 0;
+}
+
+// Welcome text
+.welcome {
+  padding: 8px 0 16px;
+  font-size: 0.95rem;
+}
+
+// Form buttons
+.form-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
