@@ -17,31 +17,25 @@
   <ion-grid>
     <ion-row>
       <ion-col size="12">
-        <app-dashboard-card
-          titulo="Saldo Actual"
-          [monto]="resumen.saldoActual"
-          tipo="saldo"
-          icono="wallet">
-        </app-dashboard-card>
+        <app-dashboard-card titulo="Saldo Actual" [monto]="resumen.saldoActual" tipo="saldo" icono="wallet"></app-dashboard-card>
       </ion-col>
       <ion-col size="6">
-        <app-dashboard-card
-          titulo="Ingresos del Mes"
-          [monto]="resumen.totalIngresosMes"
-          tipo="ingreso"
-          icono="arrow-up-circle">
-        </app-dashboard-card>
+        <app-dashboard-card titulo="Ingresos del Mes" [monto]="resumen.totalIngresosMes" tipo="ingreso" icono="arrow-up-circle"></app-dashboard-card>
       </ion-col>
       <ion-col size="6">
-        <app-dashboard-card
-          titulo="Gastos del Mes"
-          [monto]="resumen.totalGastosMes"
-          tipo="gasto"
-          icono="arrow-down-circle">
-        </app-dashboard-card>
+        <app-dashboard-card titulo="Gastos del Mes" [monto]="resumen.totalGastosMes" tipo="gasto" icono="arrow-down-circle"></app-dashboard-card>
       </ion-col>
     </ion-row>
   </ion-grid>
+
+  <div class="section-title ion-padding-top" *ngIf="resumen.gastosPorCategoria.length > 0">
+    <h4>Distribución de Gastos</h4>
+  </div>
+
+  <app-pie-chart
+    *ngIf="resumen.gastosPorCategoria.length > 0"
+    [datos]="resumen.gastosPorCategoria">
+  </app-pie-chart>
 
   <div class="section-title ion-padding-top">
     <h4>Gastos por Categoría</h4>

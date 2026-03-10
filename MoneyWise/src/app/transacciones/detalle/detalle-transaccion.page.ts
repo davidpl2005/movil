@@ -4,11 +4,13 @@ import { AlertController, ModalController, ToastController } from '@ionic/angula
 import { TransaccionService } from '../../core/services/transaccion.service';
 import { Transaccion } from '../../core/models/transaccion.model';
 import { TransactionFormComponent } from '../../shared/components/transaction-form/transaction-form.component';
+import { PhotoGalleryModalComponent } from '../../shared/components/photo-gallery-modal/photo-gallery-modal.component';
 
 @Component({
   standalone: false,
   selector: 'app-detalle-transaccion',
-  templateUrl: './detalle-transaccion.page.html'
+  templateUrl: './detalle-transaccion.page.html',
+  styleUrls: ['./detalle-transaccion.page.scss']
 })
 export class DetalleTransaccionPage implements OnInit {
   transaccion: Transaccion | undefined;
@@ -25,6 +27,18 @@ export class DetalleTransaccionPage implements OnInit {
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) this.transaccion = this.transaccionService.getById(id);
+  }
+
+  async verComprobante() {
+    if (!this.transaccion?.comprobante) return;
+    const modal = await this.modalCtrl.create({
+      component: PhotoGalleryModalComponent,
+      componentProps: {
+        fotos: [this.transaccion.comprobante],
+        fotoInicial: 0
+      }
+    });
+    await modal.present();
   }
 
   async editar() {

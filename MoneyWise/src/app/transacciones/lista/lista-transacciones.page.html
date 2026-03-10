@@ -2,24 +2,37 @@
   <ion-toolbar color="primary">
     <ion-title>Transacciones</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="abrirFormulario()">
-        <ion-icon slot="icon-only" name="add"></ion-icon>
+      <ion-button (click)="toggleOrden()">
+        <ion-icon slot="icon-only" [name]="ordenAscendente ? 'arrow-up' : 'arrow-down'"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <app-filter-bar
-    [tipoSeleccionado]="tipoFiltro"
-    [categoriaSeleccionada]="categoriaFiltro"
-    (onTipoChange)="tipoFiltro = $event"
-    (onCategoriaChange)="categoriaFiltro = $event"
-    (onBuscarChange)="textoBusqueda = $event">
-  </app-filter-bar>
+ <app-filter-bar
+  [tipoSeleccionado]="tipoFiltro"
+  [categoriaSeleccionada]="categoriaFiltro"
+  (onTipoChange)="tipoFiltro = $event; aplicarFiltrosYOrden()"
+  (onCategoriaChange)="categoriaFiltro = $event; aplicarFiltrosYOrden()"
+  (onBuscarChange)="textoBusqueda = $event; aplicarFiltrosYOrden()">
+</app-filter-bar>
+
+  <ion-item style="--background: transparent; --border-color: transparent; padding: 4px 8px 0;">
+    <ion-label style="font-size: 0.8rem; color: rgba(255,255,255,0.45);">Ordenar por:</ion-label>
+    <ion-select
+      [(ngModel)]="criterioOrden"
+      (ionChange)="aplicarOrden()"
+      interface="popover"
+      style="font-size: 0.85rem; color: rgba(255,255,255,0.7);">
+      <ion-select-option value="fecha">Fecha</ion-select-option>
+      <ion-select-option value="monto">Monto</ion-select-option>
+      <ion-select-option value="categoria">Categoría</ion-select-option>
+    </ion-select>
+  </ion-item>
 
   <app-empty-state
-    *ngIf="(transacciones | filterByType:tipoFiltro | filterByCategory:categoriaFiltro | searchByText:textoBusqueda).length === 0"
+    *ngIf="(transaccionesFiltradas).length === 0"
     mensaje="No hay transacciones"
     icono="receipt-outline"
     accion="Agregar primera transacción"
@@ -27,11 +40,17 @@
   </app-empty-state>
 
   <ion-list>
-    <app-transaction-item
-      *ngFor="let t of transacciones | filterByType:tipoFiltro | filterByCategory:categoriaFiltro | searchByText:textoBusqueda"
-      [transaccion]="t"
-      (onClick)="verDetalle(t.id)">
-    </app-transaction-item>
+    <ion-item-sliding *ngFor="let t of transaccionesFiltradas">
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="eliminarSwipe(t.id)">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+      <app-transaction-item
+        [transaccion]="t"
+        (onClick)="verDetalle(t.id)">
+      </app-transaction-item>
+    </ion-item-sliding>
   </ion-list>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">

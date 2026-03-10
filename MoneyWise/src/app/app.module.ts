@@ -11,16 +11,19 @@ import { CoreModule } from './core/core.module';
 import { StorageService } from './core/services/storage.service';
 import { AuthService } from './core/services/auth.service';
 import { TransaccionService } from './core/services/transaccion.service';
+import { ThemeService } from './core/services/theme.service';
 
 export function initializeApp(
   storageService: StorageService,
   authService: AuthService,
-  transaccionService: TransaccionService
+  transaccionService: TransaccionService,
+  themeService: ThemeService
 ) {
   return async () => {
     await storageService.init();
     await authService.init();
     await transaccionService.init();
+    await themeService.init();
   };
 }
 
@@ -38,11 +41,10 @@ export function initializeApp(
     {
       provide: APP_INITIALIZER,
       useFactory: initializeApp,
-      deps: [StorageService, AuthService, TransaccionService],
+      deps: [StorageService, AuthService, TransaccionService, ThemeService],
       multi: true
     }
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
-

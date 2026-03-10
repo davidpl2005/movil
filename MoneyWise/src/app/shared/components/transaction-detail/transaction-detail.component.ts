@@ -5,11 +5,10 @@ import { Transaccion } from '../../../core/models/transaccion.model';
   standalone: false,
   selector: 'app-transaction-detail',
   templateUrl: './transaction-detail.component.html',
-
 })
 export class TransactionDetailComponent {
   @Input() transaccion!: Transaccion;
   @Output() onEdit = new EventEmitter<void>();
   @Output() onDelete = new EventEmitter<void>();
+  @Output() onVerComprobante = new EventEmitter<void>();
 }
-

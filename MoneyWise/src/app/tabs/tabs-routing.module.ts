@@ -5,7 +5,7 @@ import { AuthGuard } from '../core/guards/auth.guard';
 
 const routes: Routes = [
   {
-    path: 'tabs',
+    path: '',
     component: TabsPage,
     canActivate: [AuthGuard],
     children: [
@@ -17,6 +17,10 @@ const routes: Routes = [
         path: 'transacciones',
         loadChildren: () => import('../transacciones/transacciones.module').then(m => m.TransaccionesModule)
       },
+      {
+        path: 'usuario',
+        loadChildren: () => import('../usuario/usuario.module').then(m => m.UsuarioModule)
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   }
@@ -27,4 +31,3 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class TabsRoutingModule {}
-

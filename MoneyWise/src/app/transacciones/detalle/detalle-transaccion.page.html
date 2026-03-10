@@ -12,7 +12,8 @@
     *ngIf="transaccion"
     [transaccion]="transaccion"
     (onEdit)="editar()"
-    (onDelete)="eliminar()">
+    (onDelete)="eliminar()"
+    (onVerComprobante)="verComprobante()">
   </app-transaction-detail>
 
   <app-empty-state

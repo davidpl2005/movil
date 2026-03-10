@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Comprobante</ion-title>
+    <ion-title>Comprobante ({{ fotoActiva + 1 }} / {{ fotos.length }})</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="cerrar()">
         <ion-icon name="close"></ion-icon>
@@ -8,6 +8,24 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
 <ion-content class="ion-text-center">
   <ion-img [src]="fotos[fotoActiva]" class="full-photo"></ion-img>
 </ion-content>
+
+<ion-footer *ngIf="fotos.length > 1">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button [disabled]="fotoActiva === 0" (click)="anterior()">
+        <ion-icon name="chevron-back"></ion-icon>
+        Anterior
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button [disabled]="fotoActiva === fotos.length - 1" (click)="siguiente()">
+        Siguiente
+        <ion-icon name="chevron-forward"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

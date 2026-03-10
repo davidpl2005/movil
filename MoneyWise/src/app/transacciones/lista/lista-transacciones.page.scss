@@ -1,0 +1,95 @@
+ion-header ion-toolbar {
+  --background: linear-gradient(90deg, #1a1a2e, #0f3460);
+  --color: #fff;
+  --min-height: 60px;
+
+  ion-title {
+    font-weight: 700;
+    font-size: 1.2rem;
+  }
+}
+
+ion-content {
+  --background: #0d1117;
+}
+
+.filter-bar {
+  background: #161b22;
+  padding: 8px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+
+  ion-segment {
+    --background: rgba(255,255,255,0.05);
+    border-radius: 10px;
+    margin-bottom: 8px;
+
+    ion-segment-button {
+      --color: rgba(255,255,255,0.5);
+      --color-checked: #63b3ed;
+      --indicator-color: rgba(99,179,237,0.2);
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+  }
+
+  ion-item {
+    --background: rgba(255,255,255,0.05);
+    --color: rgba(255,255,255,0.8);
+    --border-color: transparent;
+    border-radius: 10px;
+    margin-bottom: 8px;
+  }
+
+  ion-searchbar {
+    --background: rgba(255,255,255,0.05);
+    --color: #fff;
+    --placeholder-color: rgba(255,255,255,0.4);
+    --icon-color: rgba(255,255,255,0.4);
+    --border-radius: 10px;
+    padding: 0;
+  }
+}
+
+ion-list {
+  background: transparent;
+  padding: 8px;
+
+  ion-item {
+    --background: #161b22;
+    --border-color: rgba(255,255,255,0.06);
+    --color: #fff;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    --padding-start: 12px;
+    --inner-padding-end: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+
+    ion-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+
+      ion-icon {
+        font-size: 22px;
+      }
+    }
+
+    ion-label {
+      h3 {
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: #fff;
+        margin-bottom: 4px;
+      }
+      p {
+        font-size: 0.78rem;
+        color: rgba(255,255,255,0.45);
+      }
+    }
+  }
+}
+
+ion-fab-button {
+  --background: linear-gradient(135deg, #4f8ef7, #9f7aea);
+  --box-shadow: 0 4px 20px rgba(79,142,247,0.5);
+}

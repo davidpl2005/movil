@@ -8,7 +8,7 @@ import { ToastController, LoadingController } from '@ionic/angular';
   standalone: false,
   selector: 'app-login',
   templateUrl: './login.page.html',
-
+  styleUrls: ['./login.page.scss']
 })
 export class LoginPage {
   form: FormGroup;
@@ -22,7 +22,7 @@ export class LoginPage {
   ) {
     this.form = this.fb.group({
       email:    ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required]
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
@@ -37,7 +37,7 @@ export class LoginPage {
     await loading.dismiss();
 
     if (ok) {
-      this.router.navigate(['/tabs/dashboard'], { replaceUrl: true });
+      this.router.navigate(['/tabs'], { replaceUrl: true });
     } else {
       const toast = await this.toastCtrl.create({
         message: 'Email o contraseña incorrectos',
@@ -53,4 +53,3 @@ export class LoginPage {
     this.router.navigate(['/auth/register']);
   }
 }
-

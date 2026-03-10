@@ -1,12 +1,14 @@
 <ion-card>
   <ion-card-header>
     <ion-grid>
-      <ion-row class="ion-align-items-center">
-        <ion-col size="2">
+      <ion-row>
+        <ion-col size="12" class="ion-text-center" style="padding: 16px 0 8px;">
           <app-category-icon [categoria]="transaccion.categoria"></app-category-icon>
         </ion-col>
-        <ion-col>
-          <ion-card-title>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12" class="ion-text-center">
+          <ion-card-title style="margin-bottom: 6px;">
             <app-amount-display [monto]="transaccion.monto" [tipo]="transaccion.tipo" tamano="large"></app-amount-display>
           </ion-card-title>
           <ion-card-subtitle>{{ transaccion.fecha | dateFormat }}</ion-card-subtitle>
@@ -29,9 +31,10 @@
       <ion-item *ngIf="transaccion.descripcion">
         <ion-label class="ion-text-wrap"><strong>Descripción</strong><br/>{{ transaccion.descripcion }}</ion-label>
       </ion-item>
-      <ion-item *ngIf="transaccion.comprobante">
+      <ion-item *ngIf="transaccion.comprobante" button (click)="onVerComprobante.emit()" detail>
         <ion-label><strong>Comprobante</strong></ion-label>
-        <app-photo-preview slot="end" [src]="transaccion.comprobante" size="medium"></app-photo-preview>
+        <ion-text slot="end" color="primary" style="font-size: 13px; margin-right: 4px;">Ver imagen</ion-text>
+        <app-photo-preview slot="end" [src]="transaccion.comprobante" size="small" (onClick)="onVerComprobante.emit()"></app-photo-preview>
       </ion-item>
     </ion-list>
     <div class="action-buttons">

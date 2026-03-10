@@ -8,6 +8,7 @@ import { ToastController, LoadingController } from '@ionic/angular';
   standalone: false,
   selector: 'app-register',
   templateUrl: './register.page.html',
+  styleUrls: ['./register.page.scss']
 
 })
 export class RegisterPage {
@@ -39,7 +40,7 @@ export class RegisterPage {
     await loading.dismiss();
 
     if (ok) {
-      this.router.navigate(['/tabs/dashboard'], { replaceUrl: true });
+    this.router.navigate(['/tabs'], { replaceUrl: true });
     } else {
       const toast = await this.toastCtrl.create({
         message: 'El email ya está registrado',

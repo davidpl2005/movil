@@ -28,6 +28,7 @@ import { EmptyStateComponent } from './components/empty-state/empty-state.compon
 import { InputFieldComponent } from './components/input-field/input-field.component';
 import { SelectFieldComponent } from './components/select-field/select-field.component';
 import { DateFieldComponent } from './components/date-field/date-field.component';
+import { PieChartComponent } from './components/pie-chart/pie-chart.component';
 
 const PIPES = [
   CurrencyFormatPipe, DateFormatPipe, FilterByTypePipe, FilterByCategoryPipe,
@@ -39,7 +40,7 @@ const COMPONENTS = [
   TransactionDetailComponent, TransactionFormComponent, FilterBarComponent,
   PhotoSelectorComponent, PhotoPreviewComponent, PhotoGalleryModalComponent,
   CategoryBadgeComponent, CategoryIconComponent, AmountDisplayComponent,
-  EmptyStateComponent, InputFieldComponent, SelectFieldComponent, DateFieldComponent
+  EmptyStateComponent, InputFieldComponent, SelectFieldComponent, DateFieldComponent,PieChartComponent
 ];
 
 @NgModule({

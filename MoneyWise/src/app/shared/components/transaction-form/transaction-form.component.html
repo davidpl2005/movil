@@ -1,48 +1,58 @@
-<form [formGroup]="form">
-  <ion-segment formControlName="tipo">
-    <ion-segment-button *ngFor="let t of tipos" [value]="t.id">
-      <ion-icon [name]="t.icono"></ion-icon>
-      <ion-label>{{ t.nombre }}</ion-label>
-    </ion-segment-button>
-  </ion-segment>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="cancelar()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ transaccion ? 'Editar' : 'Nueva' }} Transacción</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  <ion-item>
-    <ion-label position="floating">Categoría *</ion-label>
-    <ion-select formControlName="categoria" interface="popover">
-      <ion-select-option *ngFor="let cat of categorias" [value]="cat.id">{{ cat.nombre }}</ion-select-option>
-    </ion-select>
-  </ion-item>
+<ion-content class="ion-padding">
+  <form [formGroup]="form">
+    <ion-segment formControlName="tipo">
+      <ion-segment-button *ngFor="let t of tipos" [value]="t.id">
+        <ion-icon [name]="t.icono"></ion-icon>
+        <ion-label>{{ t.nombre }}</ion-label>
+      </ion-segment-button>
+    </ion-segment>
 
-  <ion-item>
-    <ion-label position="floating">Fecha *</ion-label>
-    <ion-datetime formControlName="fecha" presentation="date"></ion-datetime>
-  </ion-item>
+    <ion-item>
+      <ion-label position="floating">Categoría *</ion-label>
+      <ion-select formControlName="categoria" interface="popover">
+        <ion-select-option *ngFor="let cat of categorias" [value]="cat.id">{{ cat.nombre }}</ion-select-option>
+      </ion-select>
+    </ion-item>
 
-  <ion-item>
-    <ion-label position="floating">Monto *</ion-label>
-    <ion-input type="number" formControlName="monto" placeholder="0.00"></ion-input>
-  </ion-item>
+    <ion-item>
+      <ion-label position="floating">Fecha *</ion-label>
+      <ion-datetime formControlName="fecha" presentation="date"></ion-datetime>
+    </ion-item>
 
-  <ion-item>
-    <ion-label position="floating">Descripción</ion-label>
-    <ion-textarea formControlName="descripcion" rows="3"></ion-textarea>
-  </ion-item>
+    <ion-item>
+      <ion-label position="floating">Monto *</ion-label>
+      <ion-input type="number" formControlName="monto" placeholder="0.00"></ion-input>
+    </ion-item>
 
-  <div class="ion-padding">
-    <p><strong>Comprobante (foto)</strong></p>
-    <app-photo-selector
-      [fotoActual]="fotoActual"
-      (onFotoSeleccionada)="onFotoSeleccionada($event)"
-      (onFotoEliminada)="onFotoEliminada()">
-    </app-photo-selector>
-  </div>
+    <ion-item>
+      <ion-label position="floating">Descripción</ion-label>
+      <ion-textarea formControlName="descripcion" rows="3"></ion-textarea>
+    </ion-item>
 
-  <div class="form-buttons ion-padding">
-    <ion-button expand="block" (click)="guardar()">
-      <ion-icon slot="start" name="save"></ion-icon>Guardar
-    </ion-button>
-    <ion-button expand="block" fill="outline" color="medium" (click)="onCancel.emit()">
-      Cancelar
-    </ion-button>
-  </div>
-</form>
+    <div class="ion-padding">
+      <p><strong>Comprobante (foto)</strong></p>
+      <app-photo-selector
+        [fotoActual]="fotoActual"
+        (onFotoSeleccionada)="onFotoSeleccionada($event)"
+        (onFotoEliminada)="onFotoEliminada()">
+      </app-photo-selector>
+    </div>
+
+    <div class="form-buttons ion-padding">
+      <ion-button expand="block" (click)="guardar()">
+        <ion-icon slot="start" name="save"></ion-icon>Guardar
+      </ion-button>
+    </div>
+  </form>
+</ion-content>

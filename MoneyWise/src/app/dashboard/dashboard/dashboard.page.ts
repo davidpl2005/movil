@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { AlertController } from '@ionic/angular';
 import { AuthService } from '../../core/services/auth.service';
 import { TransaccionService } from '../../core/services/transaccion.service';
 import { AnalyticsService } from '../../core/services/analytics.service';
@@ -10,7 +11,7 @@ import { User } from '../../core/models/user.model';
   standalone: false,
   selector: 'app-dashboard',
   templateUrl: './dashboard.page.html',
-
+  styleUrls: ['./dashboard.page.scss']
 })
 export class DashboardPage implements OnInit, OnDestroy {
   resumen: ResumenFinanciero = {
@@ -25,7 +26,8 @@ export class DashboardPage implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private transaccionService: TransaccionService,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    private alertCtrl: AlertController
   ) {}
 
   ngOnInit() {
@@ -39,8 +41,15 @@ export class DashboardPage implements OnInit, OnDestroy {
     this.sub?.unsubscribe();
   }
 
-  logout() {
-    this.authService.logout();
+  async logout() {
+    const alert = await this.alertCtrl.create({
+      header: 'Cerrar Sesión',
+      message: '¿Estás seguro de que deseas cerrar sesión?',
+      buttons: [
+        { text: 'Cancelar', role: 'cancel' },
+        { text: 'Cerrar Sesión', role: 'destructive', handler: () => this.authService.logout() }
+      ]
+    });
+    await alert.present();
   }
 }
-

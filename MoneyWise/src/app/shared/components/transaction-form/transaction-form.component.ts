@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ModalController } from '@ionic/angular';
 import { Transaccion } from '../../../core/models/transaccion.model';
 import { CATEGORIAS, TIPOS_TRANSACCION } from '../../../core/constants/app.constants';
 
@@ -7,7 +8,6 @@ import { CATEGORIAS, TIPOS_TRANSACCION } from '../../../core/constants/app.const
   standalone: false,
   selector: 'app-transaction-form',
   templateUrl: './transaction-form.component.html',
-
 })
 export class TransactionFormComponent implements OnInit {
   @Input() transaccion: Transaccion | null = null;
@@ -19,7 +19,10 @@ export class TransactionFormComponent implements OnInit {
   tipos = TIPOS_TRANSACCION;
   fotoActual: string = '';
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private modalCtrl: ModalController
+  ) {}
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -35,9 +38,13 @@ export class TransactionFormComponent implements OnInit {
   onFotoSeleccionada(foto: string) { this.fotoActual = foto; }
   onFotoEliminada() { this.fotoActual = ''; }
 
-  guardar() {
+  async guardar() {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }
-    this.onSave.emit({ ...this.form.value, comprobante: this.fotoActual });
+    const datos = { ...this.form.value, comprobante: this.fotoActual };
+    await this.modalCtrl.dismiss(datos);
+  }
+
+  async cancelar() {
+    await this.modalCtrl.dismiss(null);
   }
 }
-
