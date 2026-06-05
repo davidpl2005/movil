@@ -2,21 +2,29 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { User } from '../models/user.model';
+import { FirestoreService } from './firestore.service';
 import { StorageService } from './storage.service';
 
-const USERS_KEY = 'moneywise_users';
-const CURRENT_USER_KEY = 'moneywise_current_user';
+// Clave para guardar la sesión activa en el dispositivo
+const SESSION_KEY = 'moneywise_session';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private storageService: StorageService, private router: Router) {}
+  constructor(
+    private firestoreService: FirestoreService,
+    private storageService: StorageService,
+    private router: Router
+  ) {}
 
+  // Al iniciar la app, recupera la sesión guardada en el dispositivo
   async init(): Promise<void> {
-    const user = await this.storageService.get(CURRENT_USER_KEY);
-    if (user) this.currentUserSubject.next(user);
+    const session = await this.storageService.get(SESSION_KEY);
+    if (session) {
+      this.currentUserSubject.next(session);
+    }
   }
 
   get isAuthenticated(): boolean {
@@ -27,47 +35,62 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  async login(email: string, password: string): Promise<boolean> {
-    if (!email || !password) return false;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) return false;
+  async login(username: string, password: string): Promise<boolean> {
+    if (!username || !password) return false;
 
-    const users: User[] = (await this.storageService.get(USERS_KEY)) || [];
-    const user = users.find(u => u.email === email && u.password === password);
-    if (!user) return false;
+    const usernameNormalizado = username.trim().toLowerCase();
 
-    await this.storageService.set(CURRENT_USER_KEY, user);
-    this.currentUserSubject.next(user);
+    // Busca el usuario en Firestore por username
+    const usuarios = await this.firestoreService.query(
+      'users',
+      'username',
+      usernameNormalizado
+    );
+
+    const usuario = usuarios.find(u => u.password === password);
+    if (!usuario) return false;
+
+    // Guarda la sesión en el dispositivo para no pedir login cada vez
+    await this.storageService.set(SESSION_KEY, usuario);
+    this.currentUserSubject.next(usuario);
     return true;
   }
 
-  async register(email: string, password: string, nombre: string): Promise<boolean> {
-    if (!email || !password || !nombre) return false;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) return false;
+  async register(
+    username: string,
+    password: string,
+    nombre: string
+  ): Promise<boolean> {
+    if (!username || !password || !nombre) return false;
 
-    const users: User[] = (await this.storageService.get(USERS_KEY)) || [];
-    if (users.find(u => u.email === email)) return false;
+    const usernameNormalizado = username.trim().toLowerCase();
 
-    const newUser: User = {
+    // Verifica que el username no esté ya registrado
+    const existente = await this.firestoreService.query(
+      'users',
+      'username',
+      usernameNormalizado
+    );
+    if (existente.length > 0) return false;
+
+    const nuevoUsuario: User = {
       id: Date.now().toString(),
-      email,
+      username: usernameNormalizado,
       password,
-      nombre,
+      nombre: nombre.trim(),
       fechaRegistro: new Date()
     };
 
-    users.push(newUser);
-    await this.storageService.set(USERS_KEY, users);
-    await this.storageService.set(CURRENT_USER_KEY, newUser);
-    this.currentUserSubject.next(newUser);
+    // Guarda en Firestore y en sesión local
+    await this.firestoreService.set('users', nuevoUsuario.id, nuevoUsuario);
+    await this.storageService.set(SESSION_KEY, nuevoUsuario);
+    this.currentUserSubject.next(nuevoUsuario);
     return true;
   }
 
   async logout(): Promise<void> {
-    await this.storageService.remove(CURRENT_USER_KEY);
+    await this.storageService.remove(SESSION_KEY);
     this.currentUserSubject.next(null);
     this.router.navigate(['/auth/login']);
   }
 }
-

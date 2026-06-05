@@ -20,6 +20,8 @@ export function initializeApp(
   themeService: ThemeService
 ) {
   return async () => {
+    // Primero el storage (local), luego auth (necesita storage),
+    // luego transacciones (necesita auth), luego tema
     await storageService.init();
     await authService.init();
     await transaccionService.init();

@@ -21,26 +21,29 @@ export class LoginPage {
     private loadingCtrl: LoadingController
   ) {
     this.form = this.fb.group({
-      email:    ['', [Validators.required, Validators.email]],
+      username: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
   async login() {
-    if (this.form.invalid) { this.form.markAllAsTouched(); return; }
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
     const loading = await this.loadingCtrl.create({ message: 'Iniciando sesión...' });
     await loading.present();
 
-    const { email, password } = this.form.value;
-    const ok = await this.authService.login(email, password);
+    const { username, password } = this.form.value;
+    const ok = await this.authService.login(username, password);
     await loading.dismiss();
 
     if (ok) {
       this.router.navigate(['/tabs'], { replaceUrl: true });
     } else {
       const toast = await this.toastCtrl.create({
-        message: 'Email o contraseña incorrectos',
+        message: 'Usuario o contraseña incorrectos',
         duration: 2500,
         color: 'danger',
         position: 'top'

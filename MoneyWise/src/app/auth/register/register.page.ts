@@ -9,13 +9,11 @@ import { ToastController, LoadingController } from '@ionic/angular';
   selector: 'app-register',
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss']
-
 })
 export class RegisterPage {
   form: FormGroup;
 
   constructor(
-    
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
@@ -24,26 +22,29 @@ export class RegisterPage {
   ) {
     this.form = this.fb.group({
       nombre:   ['', Validators.required],
-      email:    ['', [Validators.required, Validators.email]],
+      username: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
   async registrar() {
-    if (this.form.invalid) { this.form.markAllAsTouched(); return; }
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
     const loading = await this.loadingCtrl.create({ message: 'Creando cuenta...' });
     await loading.present();
 
-    const { nombre, email, password } = this.form.value;
-    const ok = await this.authService.register(email, password, nombre);
+    const { nombre, username, password } = this.form.value;
+    const ok = await this.authService.register(username, password, nombre);
     await loading.dismiss();
 
     if (ok) {
-    this.router.navigate(['/tabs'], { replaceUrl: true });
+      this.router.navigate(['/tabs'], { replaceUrl: true });
     } else {
       const toast = await this.toastCtrl.create({
-        message: 'El email ya está registrado',
+        message: 'Ese nombre de usuario ya está en uso, elige otro',
         duration: 2500,
         color: 'danger',
         position: 'top'
@@ -56,4 +57,3 @@ export class RegisterPage {
     this.router.navigate(['/auth/login']);
   }
 }
-

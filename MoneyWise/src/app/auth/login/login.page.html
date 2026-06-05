@@ -6,35 +6,20 @@
   </div>
 
   <form [formGroup]="form">
-    <ion-item [class.ion-invalid]="form.get('email')?.invalid && form.get('email')?.touched">
-      <ion-label position="floating">Email</ion-label>
-      <ion-input type="email" formControlName="email" placeholder="ejemplo@correo.com"></ion-input>
-      <ion-note slot="error">El email debe contener @ y un punto (ejemplo@correo.com)</ion-note>
+
+    <ion-item [class.ion-invalid]="form.get('username')?.invalid && form.get('username')?.touched">
+      <ion-label position="floating">Nombre de usuario</ion-label>
+      <ion-input type="text" formControlName="username" placeholder="Tu nombre de usuario"></ion-input>
+      <ion-note slot="error">El nombre de usuario es requerido</ion-note>
     </ion-item>
 
-    <div class="ion-padding-start ion-padding-top" *ngIf="form.get('email')?.touched && form.get('email')?.value">
-      <ion-text [color]="form.get('email')?.value?.includes('@') ? 'success' : 'medium'" style="font-size: 13px; display: block;">
-        <ion-icon [name]="form.get('email')?.value?.includes('@') ? 'checkmark-circle' : 'ellipse-outline'"></ion-icon>
-        Debe contener @
-      </ion-text>
-      <ion-text [color]="form.get('email')?.value?.includes('.') ? 'success' : 'medium'" style="font-size: 13px; display: block;">
-        <ion-icon [name]="form.get('email')?.value?.includes('.') ? 'checkmark-circle' : 'ellipse-outline'"></ion-icon>
-        Debe contener un punto (.)
-      </ion-text>
-    </div>
-
-    <ion-item [class.ion-invalid]="form.get('password')?.invalid && form.get('password')?.touched" style="margin-top: 12px;">
+    <ion-item
+      [class.ion-invalid]="form.get('password')?.invalid && form.get('password')?.touched"
+      style="margin-top: 12px;">
       <ion-label position="floating">Contraseña</ion-label>
       <ion-input type="password" formControlName="password" placeholder="Tu contraseña"></ion-input>
       <ion-note slot="error">La contraseña debe tener mínimo 6 caracteres</ion-note>
     </ion-item>
-
-    <div class="ion-padding-start ion-padding-top" *ngIf="form.get('password')?.touched && form.get('password')?.value">
-      <ion-text [color]="form.get('password')?.value?.length >= 6 ? 'success' : 'medium'" style="font-size: 13px; display: block;">
-        <ion-icon [name]="form.get('password')?.value?.length >= 6 ? 'checkmark-circle' : 'ellipse-outline'"></ion-icon>
-        Mínimo 6 caracteres ({{ form.get('password')?.value?.length || 0 }}/6)
-      </ion-text>
-    </div>
 
     <div class="ion-padding-top">
       <ion-button expand="block" (click)="login()">
@@ -42,10 +27,12 @@
         Iniciar Sesión
       </ion-button>
     </div>
+
   </form>
 
   <div class="ion-text-center ion-padding-top">
     <ion-text color="medium">¿No tienes cuenta?</ion-text>
     <ion-button fill="clear" (click)="irARegistro()">Regístrate</ion-button>
   </div>
+
 </ion-content>

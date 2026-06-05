@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastController, LoadingController } from '@ionic/angular';
 import { AuthService } from '../core/services/auth.service';
+import { FirestoreService } from '../core/services/firestore.service';
 import { StorageService } from '../core/services/storage.service';
 import { ThemeService } from '../core/services/theme.service';
 import { User } from '../core/models/user.model';
 
-const USERS_KEY = 'moneywise_users';
-const CURRENT_USER_KEY = 'moneywise_current_user';
+const SESSION_KEY = 'moneywise_session';
 
 @Component({
   standalone: false,
@@ -22,6 +22,7 @@ export class UsuarioPage implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private firestoreService: FirestoreService,
     private storageService: StorageService,
     public themeService: ThemeService,
     private toastCtrl: ToastController,
@@ -40,10 +41,9 @@ export class UsuarioPage implements OnInit {
 
   buildForm() {
     this.form = this.fb.group({
-      nombre:        [this.usuario?.nombre || '', Validators.required],
-      email:         [this.usuario?.email || '', [Validators.required, Validators.email]],
-      passwordActual:[''],
-      passwordNueva: ['', Validators.minLength(6)]
+      nombre:         [this.usuario?.nombre || '', Validators.required],
+      passwordActual: [''],
+      passwordNueva:  ['', Validators.minLength(6)]
     });
   }
 
@@ -77,7 +77,7 @@ export class UsuarioPage implements OnInit {
       return;
     }
 
-    if (this.form.get('nombre')?.invalid || this.form.get('email')?.invalid) {
+    if (this.form.get('nombre')?.invalid) {
       this.form.markAllAsTouched();
       return;
     }
@@ -97,21 +97,23 @@ export class UsuarioPage implements OnInit {
     const loading = await this.loadingCtrl.create({ message: 'Guardando...' });
     await loading.present();
 
-    const { nombre, email } = this.form.value;
-    const usuarios: User[] = (await this.storageService.get(USERS_KEY)) || [];
-    const idx = usuarios.findIndex(u => u.id === this.usuario!.id);
+    const { nombre } = this.form.value;
 
-    if (idx !== -1) {
-      usuarios[idx].nombre = nombre;
-      usuarios[idx].email = email;
-      if (passwordNueva && passwordNueva.length >= 6) {
-        usuarios[idx].password = passwordNueva;
-      }
-      await this.storageService.set(USERS_KEY, usuarios);
-      await this.storageService.set(CURRENT_USER_KEY, usuarios[idx]);
-      (this.authService as any).currentUserSubject.next(usuarios[idx]);
-      this.usuario = usuarios[idx];
-    }
+    // Actualiza en Firestore
+    const usuarioActualizado: User = {
+      ...this.usuario!,
+      nombre: nombre.trim(),
+      password: passwordNueva && passwordNueva.length >= 6
+        ? passwordNueva
+        : this.usuario!.password
+    };
+
+    await this.firestoreService.set('users', usuarioActualizado.id, usuarioActualizado);
+
+    // Actualiza la sesión local
+    await this.storageService.set(SESSION_KEY, usuarioActualizado);
+    (this.authService as any).currentUserSubject.next(usuarioActualizado);
+    this.usuario = usuarioActualizado;
 
     await loading.dismiss();
 
