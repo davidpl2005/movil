@@ -1,3 +1,7 @@
-<ion-avatar [class]="'cat-icon-' + tamano" [style.background]="categoria | categoryColor">
-  <ion-icon [name]="categoria | categoryIcon" color="light"></ion-icon>
-</ion-avatar>
+<div
+  class="cat-icon-wrap"
+  [class.cat-icon-small]="tamano === 'small'"
+  [class.cat-icon-medium]="tamano === 'medium'"
+  [style.background]="categoria | categoryColor">
+  <ion-icon [name]="categoria | categoryIcon"></ion-icon>
+</div>

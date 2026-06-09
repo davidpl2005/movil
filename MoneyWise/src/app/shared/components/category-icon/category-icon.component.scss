@@ -1,0 +1,25 @@
+.cat-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--mw-radius-md);
+  flex-shrink: 0;
+
+  ion-icon {
+    color: #fff;
+  }
+
+  &.cat-icon-small {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--mw-radius-sm);
+    ion-icon { font-size: 17px; }
+  }
+
+  &.cat-icon-medium {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--mw-radius-md);
+    ion-icon { font-size: 22px; }
+  }
+}

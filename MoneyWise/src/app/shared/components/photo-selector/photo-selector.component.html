@@ -1,19 +1,37 @@
 <div class="photo-selector">
-  <div *ngIf="fotoActual && fotoActual !== ''" class="photo-preview-container">
+
+  <div class="photo-preview-area" *ngIf="fotoActual && fotoActual !== ''">
     <img [src]="fotoActual" class="preview-img" alt="Foto del comprobante" />
+    <div class="preview-badge">
+      <ion-icon name="checkmark-circle"></ion-icon>
+      Comprobante adjunto
+    </div>
   </div>
-  <div class="photo-buttons">
-    <ion-button fill="outline" size="small" (click)="tomarFoto()">
-      <ion-icon slot="start" name="camera"></ion-icon>
-      Tomar Foto
+
+  <div class="placeholder-area" *ngIf="!fotoActual || fotoActual === ''">
+    <ion-icon name="image-outline" class="placeholder-icon"></ion-icon>
+    <span class="placeholder-text">Sin comprobante</span>
+  </div>
+
+  <div class="photo-actions">
+    <ion-button fill="outline" size="small" class="photo-btn" (click)="tomarFoto()">
+      <ion-icon slot="start" name="camera-outline"></ion-icon>
+      Cámara
     </ion-button>
-    <ion-button fill="outline" size="small" (click)="seleccionarGaleria()">
-      <ion-icon slot="start" name="images"></ion-icon>
+    <ion-button fill="outline" size="small" class="photo-btn" (click)="seleccionarGaleria()">
+      <ion-icon slot="start" name="images-outline"></ion-icon>
       Galería
     </ion-button>
-    <ion-button *ngIf="fotoActual && fotoActual !== ''" fill="outline" size="small" color="danger" (click)="eliminarFoto()">
-      <ion-icon slot="start" name="trash"></ion-icon>
-      Eliminar
+    <ion-button
+      *ngIf="fotoActual && fotoActual !== ''"
+      fill="outline"
+      size="small"
+      color="danger"
+      class="photo-btn"
+      (click)="eliminarFoto()">
+      <ion-icon slot="start" name="trash-outline"></ion-icon>
+      Quitar
     </ion-button>
   </div>
+
 </div>

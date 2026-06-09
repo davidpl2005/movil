@@ -1,0 +1,25 @@
+.mw-field {
+  --background: var(--mw-surface);
+  --border-color: var(--mw-border);
+  --color: var(--mw-text);
+  --highlight-color-focused: var(--mw-primary);
+  border-radius: var(--mw-radius-md);
+  margin-bottom: 10px;
+  overflow: hidden;
+  border: 1px solid var(--mw-border);
+
+  ion-label {
+    --color: var(--mw-text-muted);
+  }
+
+  ion-datetime {
+    --background: transparent;
+    --color: var(--mw-text);
+  }
+
+  ion-note[slot="error"] {
+    color: var(--mw-danger);
+    font-size: 0.78rem;
+    padding: 4px 0;
+  }
+}

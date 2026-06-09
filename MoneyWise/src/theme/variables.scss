@@ -1,2 +1,170 @@
-// For information on how to create your own theme, please refer to:
-// https://ionicframework.com/docs/theming/
+// ============================================================
+// MoneyWise – Design Tokens
+// ============================================================
+
+// ── Modo Oscuro (por defecto) ────────────────────────────────
+:root,
+body[color-theme="dark"] {
+  // Fondos
+  --mw-bg:           #06111F;
+  --mw-bg-soft:      #081929;
+  --mw-surface:      #0B1B2B;
+  --mw-surface-2:    #11263A;
+  --mw-surface-3:    #162F47;
+
+  // Texto
+  --mw-text:         #F8FAFC;
+  --mw-text-muted:   #94A3B8;
+
+  // Bordes y sombras
+  --mw-border:       #1F3B57;
+  --mw-shadow-sm:    0 1px 4px rgba(0,0,0,0.35);
+  --mw-shadow-md:    0 4px 16px rgba(0,0,0,0.40);
+  --mw-shadow-lg:    0 8px 32px rgba(0,0,0,0.50);
+
+  // Primario
+  --mw-primary:       #60A5FA;
+  --mw-primary-dark:  #3B82F6;
+  --mw-primary-soft:  rgba(96,165,250,0.14);
+  --mw-primary-rgb:   96,165,250;
+
+  // Semánticos
+  --mw-success:       #4ADE80;
+  --mw-success-soft:  rgba(74,222,128,0.14);
+  --mw-danger:        #F87171;
+  --mw-danger-soft:   rgba(248,113,113,0.14);
+  --mw-warning:       #FBBF24;
+  --mw-warning-soft:  rgba(251,191,36,0.14);
+  --mw-info:          #38BDF8;
+  --mw-info-soft:     rgba(56,189,248,0.14);
+
+  // Gradientes
+  --mw-gradient-primary: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);
+  --mw-gradient-soft:    linear-gradient(135deg, #0B1B2B 0%, #11263A 100%);
+
+  // Radios
+  --mw-radius-sm:  8px;
+  --mw-radius-md:  12px;
+  --mw-radius-lg:  16px;
+  --mw-radius-xl:  24px;
+
+  // ── Mapeo Ionic ──────────────────────────────────────────
+  --ion-background-color:          var(--mw-bg);
+  --ion-background-color-rgb:      6,17,31;
+  --ion-text-color:                var(--mw-text);
+  --ion-text-color-rgb:            248,250,252;
+
+  --ion-color-primary:             var(--mw-primary);
+  --ion-color-primary-rgb:         var(--mw-primary-rgb);
+  --ion-color-primary-contrast:    #0B1B2B;
+  --ion-color-primary-shade:       #3B82F6;
+  --ion-color-primary-tint:        #93C5FD;
+
+  --ion-color-success:             var(--mw-success);
+  --ion-color-success-rgb:         74,222,128;
+  --ion-color-success-contrast:    #0B1B2B;
+  --ion-color-success-shade:       #16A34A;
+  --ion-color-success-tint:        #86EFAC;
+
+  --ion-color-danger:              var(--mw-danger);
+  --ion-color-danger-rgb:          248,113,113;
+  --ion-color-danger-contrast:     #0B1B2B;
+  --ion-color-danger-shade:        #EF4444;
+  --ion-color-danger-tint:         #FCA5A5;
+
+  --ion-color-warning:             var(--mw-warning);
+  --ion-color-warning-rgb:         251,191,36;
+  --ion-color-warning-contrast:    #0B1B2B;
+
+  --ion-color-medium:              var(--mw-text-muted);
+  --ion-color-medium-rgb:          148,163,184;
+
+  --ion-item-background:           var(--mw-surface);
+  --ion-card-background:           var(--mw-surface);
+  --ion-toolbar-background:        var(--mw-surface);
+  --ion-tab-bar-background:        var(--mw-surface);
+  --ion-tab-bar-border-color:      var(--mw-border);
+}
+
+// ── Modo Claro ───────────────────────────────────────────────
+body[color-theme="light"] {
+  // Fondos
+  --mw-bg:           #F5FAFF;
+  --mw-bg-soft:      #EEF6FF;
+  --mw-surface:      #FFFFFF;
+  --mw-surface-2:    #EEF6FF;
+  --mw-surface-3:    #DCEEFF;
+
+  // Texto
+  --mw-text:         #0F172A;
+  --mw-text-muted:   #64748B;
+
+  // Bordes y sombras
+  --mw-border:       #D8E9FF;
+  --mw-shadow-sm:    0 1px 4px rgba(15,23,42,0.07);
+  --mw-shadow-md:    0 4px 16px rgba(15,23,42,0.09);
+  --mw-shadow-lg:    0 8px 32px rgba(15,23,42,0.12);
+
+  // Primario
+  --mw-primary:       #0B74FF;
+  --mw-primary-dark:  #075FDB;
+  --mw-primary-soft:  #DCEEFF;
+  --mw-primary-rgb:   11,116,255;
+
+  // Semánticos
+  --mw-success:       #16A34A;
+  --mw-success-soft:  #DCFCE7;
+  --mw-danger:        #EF4444;
+  --mw-danger-soft:   #FEE2E2;
+  --mw-warning:       #D97706;
+  --mw-warning-soft:  #FEF3C7;
+  --mw-info:          #0EA5E9;
+  --mw-info-soft:     #E0F2FE;
+
+  // Gradientes
+  --mw-gradient-primary: linear-gradient(135deg, #0B74FF 0%, #38BDF8 100%);
+  --mw-gradient-soft:    linear-gradient(135deg, #F5FAFF 0%, #EEF6FF 100%);
+
+  // Radios (igual)
+  --mw-radius-sm:  8px;
+  --mw-radius-md:  12px;
+  --mw-radius-lg:  16px;
+  --mw-radius-xl:  24px;
+
+  // ── Mapeo Ionic ──────────────────────────────────────────
+  --ion-background-color:          var(--mw-bg);
+  --ion-background-color-rgb:      245,250,255;
+  --ion-text-color:                var(--mw-text);
+  --ion-text-color-rgb:            15,23,42;
+
+  --ion-color-primary:             var(--mw-primary);
+  --ion-color-primary-rgb:         var(--mw-primary-rgb);
+  --ion-color-primary-contrast:    #FFFFFF;
+  --ion-color-primary-shade:       #075FDB;
+  --ion-color-primary-tint:        #60A5FA;
+
+  --ion-color-success:             var(--mw-success);
+  --ion-color-success-rgb:         22,163,74;
+  --ion-color-success-contrast:    #FFFFFF;
+  --ion-color-success-shade:       #166534;
+  --ion-color-success-tint:        #4ADE80;
+
+  --ion-color-danger:              var(--mw-danger);
+  --ion-color-danger-rgb:          239,68,68;
+  --ion-color-danger-contrast:     #FFFFFF;
+  --ion-color-danger-shade:        #DC2626;
+  --ion-color-danger-tint:         #F87171;
+
+  --ion-color-warning:             var(--mw-warning);
+  --ion-color-warning-rgb:         217,119,6;
+  --ion-color-warning-contrast:    #FFFFFF;
+
+  --ion-color-medium:              var(--mw-text-muted);
+  --ion-color-medium-rgb:          100,116,139;
+
+  --ion-item-background:           var(--mw-surface);
+  --ion-card-background:           var(--mw-surface);
+  --ion-toolbar-background:        var(--mw-surface);
+  --ion-tab-bar-background:        var(--mw-surface);
+  --ion-tab-bar-border-color:      var(--mw-border);
+}

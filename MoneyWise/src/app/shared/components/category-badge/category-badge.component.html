@@ -1,4 +1,4 @@
-<ion-badge [style.background]="categoria | categoryColor">
-  <ion-icon *ngIf="mostrarIcono" [name]="categoria | categoryIcon"></ion-icon>
+<span class="cat-badge" [style.background]="'color-mix(in srgb, ' + (categoria | categoryColor) + ' 18%, transparent)'" [style.color]="categoria | categoryColor" [style.border-color]="'color-mix(in srgb, ' + (categoria | categoryColor) + ' 30%, transparent)'">
+  <ion-icon *ngIf="mostrarIcono" [name]="categoria | categoryIcon" class="cat-badge-icon"></ion-icon>
   {{ categoria }}
-</ion-badge>
+</span>

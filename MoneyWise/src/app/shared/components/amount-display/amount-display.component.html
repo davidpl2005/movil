@@ -1,5 +1,10 @@
-<ion-text
-  [color]="tipo === 'ingreso' ? 'success' : tipo === 'gasto' ? 'danger' : 'dark'"
-  [class]="'amount-' + tamano">
-  {{ tipo === 'gasto' ? '-' : tipo === 'ingreso' ? '+' : '' }}{{ monto | currencyFormat }}
-</ion-text>
+<span
+  class="amount-display"
+  [class.amount-ingreso]="tipo === 'ingreso'"
+  [class.amount-gasto]="tipo === 'gasto'"
+  [class.amount-neutral]="tipo === 'neutral'"
+  [class.size-small]="tamano === 'small'"
+  [class.size-medium]="tamano === 'medium'"
+  [class.size-large]="tamano === 'large'">
+  <span class="sign" *ngIf="tipo !== 'neutral'">{{ tipo === 'gasto' ? '−' : '+' }}</span>{{ monto | currencyFormat }}
+</span>

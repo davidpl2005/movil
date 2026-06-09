@@ -1,9 +1,11 @@
-<ion-card [class]="'card-' + tipo">
-  <ion-card-header>
-    <ion-icon [name]="icono" [color]="tipo === 'ingreso' ? 'success' : tipo === 'gasto' ? 'danger' : 'primary'"></ion-icon>
-    <ion-card-subtitle>{{ titulo }}</ion-card-subtitle>
-  </ion-card-header>
-  <ion-card-content>
-    <h2 [class]="'amount-' + tipo">{{ monto | currencyFormat }}</h2>
-  </ion-card-content>
-</ion-card>
+<div class="dc-card" [class.dc-saldo]="tipo === 'saldo'" [class.dc-ingreso]="tipo === 'ingreso'" [class.dc-gasto]="tipo === 'gasto'">
+  <div class="dc-top">
+    <div class="dc-icon-wrap">
+      <ion-icon [name]="icono"></ion-icon>
+    </div>
+    <span class="dc-label">{{ titulo }}</span>
+  </div>
+  <div class="dc-amount">
+    {{ monto | currencyFormat }}
+  </div>
+</div>

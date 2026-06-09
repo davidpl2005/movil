@@ -1,38 +1,58 @@
-<ion-content class="ion-padding login-content">
-  <div class="login-header">
-    <ion-icon name="wallet" color="primary" style="font-size: 64px;"></ion-icon>
-    <h1>MoneyWise</h1>
-    <p>Controla tus finanzas personales</p>
-  </div>
+<ion-content class="mw-page">
+  <div class="mw-auth">
 
-  <form [formGroup]="form">
-
-    <ion-item [class.ion-invalid]="form.get('username')?.invalid && form.get('username')?.touched">
-      <ion-label position="floating">Nombre de usuario</ion-label>
-      <ion-input type="text" formControlName="username" placeholder="Tu nombre de usuario"></ion-input>
-      <ion-note slot="error">El nombre de usuario es requerido</ion-note>
-    </ion-item>
-
-    <ion-item
-      [class.ion-invalid]="form.get('password')?.invalid && form.get('password')?.touched"
-      style="margin-top: 12px;">
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input type="password" formControlName="password" placeholder="Tu contraseña"></ion-input>
-      <ion-note slot="error">La contraseña debe tener mínimo 6 caracteres</ion-note>
-    </ion-item>
-
-    <div class="ion-padding-top">
-      <ion-button expand="block" (click)="login()">
-        <ion-icon slot="start" name="log-in"></ion-icon>
-        Iniciar Sesión
-      </ion-button>
+    <div class="mw-auth-hero">
+      <div class="hero-icon-wrap">
+        <ion-icon name="wallet"></ion-icon>
+      </div>
+      <h1 class="mw-title">MoneyWise</h1>
+      <p class="mw-subtitle">Controla tus finanzas personales</p>
     </div>
 
-  </form>
+    <div class="mw-auth-card">
+      <form [formGroup]="form">
 
-  <div class="ion-text-center ion-padding-top">
-    <ion-text color="medium">¿No tienes cuenta?</ion-text>
-    <ion-button fill="clear" (click)="irARegistro()">Regístrate</ion-button>
+        <ion-item
+          class="mw-field"
+          [class.ion-invalid]="form.get('username')?.invalid && form.get('username')?.touched">
+          <ion-label position="floating">Nombre de usuario</ion-label>
+          <ion-input
+            type="text"
+            formControlName="username"
+            placeholder="Tu nombre de usuario"
+            autocomplete="username">
+          </ion-input>
+          <ion-note slot="error">El nombre de usuario es requerido</ion-note>
+        </ion-item>
+
+        <ion-item
+          class="mw-field"
+          [class.ion-invalid]="form.get('password')?.invalid && form.get('password')?.touched">
+          <ion-label position="floating">Contraseña</ion-label>
+          <ion-input
+            type="password"
+            formControlName="password"
+            placeholder="Mínimo 6 caracteres"
+            autocomplete="current-password">
+          </ion-input>
+          <ion-note slot="error">La contraseña debe tener mínimo 6 caracteres</ion-note>
+        </ion-item>
+
+        <ion-button
+          expand="block"
+          class="mw-button login-btn"
+          (click)="login()">
+          <ion-icon slot="start" name="log-in-outline"></ion-icon>
+          Iniciar Sesión
+        </ion-button>
+
+      </form>
+
+      <div class="auth-footer">
+        <span class="mw-muted">¿No tienes cuenta?</span>
+        <ion-button fill="clear" class="link-btn" (click)="irARegistro()">Regístrate</ion-button>
+      </div>
+    </div>
+
   </div>
-
 </ion-content>

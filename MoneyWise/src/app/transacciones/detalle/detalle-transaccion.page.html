@@ -1,24 +1,29 @@
-<ion-header>
-  <ion-toolbar color="primary">
+<ion-header class="ion-no-border">
+  <ion-toolbar class="mw-header">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/tabs/transacciones"></ion-back-button>
+      <ion-back-button defaultHref="/tabs/transacciones" text="" aria-label="Volver"></ion-back-button>
     </ion-buttons>
     <ion-title>Detalle</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <app-transaction-detail
-    *ngIf="transaccion"
-    [transaccion]="transaccion"
-    (onEdit)="editar()"
-    (onDelete)="eliminar()"
-    (onVerComprobante)="verComprobante()">
-  </app-transaction-detail>
+<ion-content class="mw-page">
+  <div class="detail-scroll">
 
-  <app-empty-state
-    *ngIf="!transaccion"
-    mensaje="Transacción no encontrada"
-    icono="alert-circle-outline">
-  </app-empty-state>
+    <app-transaction-detail
+      *ngIf="transaccion"
+      [transaccion]="transaccion"
+      (onEdit)="editar()"
+      (onDelete)="eliminar()"
+      (onVerComprobante)="verComprobante()">
+    </app-transaction-detail>
+
+    <app-empty-state
+      *ngIf="!transaccion"
+      mensaje="Transacción no encontrada"
+      icono="alert-circle-outline">
+    </app-empty-state>
+
+    <div class="mw-safe-bottom"></div>
+  </div>
 </ion-content>

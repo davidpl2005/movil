@@ -1,0 +1,42 @@
+.photo-preview-wrap {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  border-radius: var(--mw-radius-sm);
+  box-shadow: var(--mw-shadow-sm);
+  border: 1px solid var(--mw-border);
+  transition: transform 0.15s ease;
+
+  &:active { transform: scale(0.97); }
+
+  &.size-small  { width: 44px;  height: 44px; }
+  &.size-medium { width: 80px;  height: 80px; border-radius: var(--mw-radius-md); }
+  &.size-large  { width: 100%;  min-height: 160px; border-radius: var(--mw-radius-lg); }
+}
+
+.preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.preview-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+
+  ion-icon {
+    font-size: 20px;
+    color: #fff;
+  }
+
+  .photo-preview-wrap:hover & {
+    opacity: 1;
+  }
+}

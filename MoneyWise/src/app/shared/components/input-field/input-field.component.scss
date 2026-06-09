@@ -1,0 +1,30 @@
+.mw-field {
+  --background: var(--mw-surface);
+  --border-color: var(--mw-border);
+  --color: var(--mw-text);
+  --highlight-color-focused: var(--mw-primary);
+  --placeholder-color: var(--mw-text-muted);
+  border-radius: var(--mw-radius-md);
+  margin-bottom: 10px;
+  overflow: hidden;
+  border: 1px solid var(--mw-border);
+
+  ion-label {
+    --color: var(--mw-text-muted);
+  }
+
+  ion-input {
+    --color: var(--mw-text);
+    --placeholder-color: var(--mw-text-muted);
+  }
+
+  ion-note[slot="error"] {
+    color: var(--mw-danger);
+    font-size: 0.78rem;
+    padding: 4px 0;
+  }
+
+  &[disabled] {
+    opacity: 0.55;
+  }
+}

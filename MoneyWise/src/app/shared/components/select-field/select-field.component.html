@@ -1,7 +1,17 @@
-<ion-item [class.ion-invalid]="error">
+<ion-item
+  class="mw-field"
+  [class.ion-invalid]="error"
+  lines="inset">
   <ion-label position="floating">{{ label }}</ion-label>
-  <ion-select [value]="value" (ionChange)="onChange.emit($event.detail.value)">
-    <ion-select-option *ngFor="let opt of options" [value]="opt.id">{{ opt.nombre }}</ion-select-option>
+  <ion-select
+    [value]="value"
+    interface="popover"
+    (ionChange)="onChange.emit($event.detail.value)">
+    <ion-select-option
+      *ngFor="let opt of options"
+      [value]="opt.id">
+      {{ opt.nombre }}
+    </ion-select-option>
   </ion-select>
   <ion-note slot="error" *ngIf="error">{{ error }}</ion-note>
 </ion-item>

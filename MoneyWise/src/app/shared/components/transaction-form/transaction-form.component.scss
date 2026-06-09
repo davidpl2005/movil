@@ -1,0 +1,84 @@
+.form-toolbar {
+  --background: var(--mw-surface);
+  --color: var(--mw-text);
+  --border-width: 0;
+  box-shadow: var(--mw-shadow-sm);
+}
+
+.form-content {
+  --background: var(--mw-bg);
+}
+
+.form-section {
+  padding: 16px 16px 8px;
+}
+
+.tipo-segment {
+  --background: var(--mw-surface-2);
+  border-radius: var(--mw-radius-md);
+  padding: 3px;
+
+  ion-segment-button {
+    --color: var(--mw-text-muted);
+    --color-checked: var(--mw-primary);
+    --indicator-color: var(--mw-surface);
+    --indicator-box-shadow: var(--mw-shadow-sm);
+    border-radius: calc(var(--mw-radius-md) - 3px);
+    font-size: 0.85rem;
+    font-weight: 600;
+    min-height: 40px;
+
+    ion-icon { font-size: 17px; margin-bottom: 2px; }
+  }
+}
+
+.form-fields {
+  padding: 0 16px;
+}
+
+.mw-field {
+  --background: var(--mw-surface);
+  --border-color: var(--mw-border);
+  --color: var(--mw-text);
+  --highlight-color-focused: var(--mw-primary);
+  --placeholder-color: var(--mw-text-muted);
+  border-radius: var(--mw-radius-md);
+  margin-bottom: 10px;
+  overflow: hidden;
+  border: 1px solid var(--mw-border);
+
+  ion-label { --color: var(--mw-text-muted); }
+  ion-input, ion-textarea, ion-select, ion-datetime { --color: var(--mw-text); }
+}
+
+.comprobante-section {
+  padding: 4px 16px 8px;
+}
+
+.comprobante-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--mw-text-muted);
+  margin: 0 0 10px;
+
+  ion-icon { font-size: 16px; }
+}
+
+.form-save-section {
+  padding: 8px 16px 32px;
+}
+
+.save-btn {
+  --background: var(--mw-gradient-primary);
+  --border-radius: var(--mw-radius-md);
+  --box-shadow: 0 4px 16px rgba(var(--mw-primary-rgb), 0.35);
+  --color: #fff;
+  height: 52px;
+  font-size: 1rem;
+  font-weight: 700;
+}

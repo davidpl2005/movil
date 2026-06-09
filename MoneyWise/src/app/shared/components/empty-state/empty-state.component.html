@@ -1,7 +1,13 @@
-<div class="empty-state">
-  <ion-icon [name]="icono" size="large" color="medium"></ion-icon>
-  <ion-text color="medium"><p>{{ mensaje }}</p></ion-text>
-  <ion-button *ngIf="accion" fill="outline" (click)="onAccion.emit()">
+<div class="empty-wrap">
+  <div class="empty-icon-wrap">
+    <ion-icon [name]="icono"></ion-icon>
+  </div>
+  <p class="empty-msg">{{ mensaje }}</p>
+  <ion-button
+    *ngIf="accion"
+    fill="outline"
+    class="empty-btn"
+    (click)="onAccion.emit()">
     {{ accion }}
   </ion-button>
 </div>

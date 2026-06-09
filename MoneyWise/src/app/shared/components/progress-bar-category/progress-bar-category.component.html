@@ -1,7 +1,16 @@
 <div class="progress-item">
-  <div class="progress-header">
-    <ion-label>{{ categoria }}</ion-label>
-    <ion-text>{{ monto | currencyFormat }} ({{ porcentaje | number:'1.0-0' }}%)</ion-text>
+  <div class="progress-row">
+    <span class="progress-cat">{{ categoria }}</span>
+    <span class="progress-values">
+      <span class="progress-amount">{{ monto | currencyFormat }}</span>
+      <span class="progress-pct">{{ porcentaje | number:'1.0-0' }}%</span>
+    </span>
   </div>
-  <ion-progress-bar [value]="porcentaje / 100" [style.--progress-background]="color"></ion-progress-bar>
+  <div class="progress-track">
+    <div
+      class="progress-fill"
+      [style.width.%]="porcentaje"
+      [style.background]="color">
+    </div>
+  </div>
 </div>

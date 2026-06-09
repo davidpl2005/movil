@@ -1,55 +1,77 @@
-<ion-header>
-  <ion-toolbar>
+<ion-header class="ion-no-border">
+  <ion-toolbar class="mw-header">
     <ion-buttons slot="start">
-      <ion-button (click)="irALogin()">
-        <ion-icon name="arrow-back"></ion-icon>
+      <ion-button (click)="irALogin()" aria-label="Volver al login">
+        <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
     <ion-title>Crear Cuenta</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <form [formGroup]="form">
+<ion-content class="mw-page">
+  <div class="register-wrap">
 
-    <ion-item [class.ion-invalid]="form.get('nombre')?.invalid && form.get('nombre')?.touched">
-      <ion-label position="floating">Nombre completo</ion-label>
-      <ion-input type="text" formControlName="nombre" placeholder="Tu nombre"></ion-input>
-      <ion-note slot="error">El nombre es requerido</ion-note>
-    </ion-item>
-
-    <ion-item
-      [class.ion-invalid]="form.get('username')?.invalid && form.get('username')?.touched"
-      style="margin-top: 12px;">
-      <ion-label position="floating">Nombre de usuario</ion-label>
-      <ion-input type="text" formControlName="username" placeholder="Elige un nombre de usuario"></ion-input>
-      <ion-note slot="error">El nombre de usuario es requerido</ion-note>
-    </ion-item>
-
-    <ion-item
-      [class.ion-invalid]="form.get('password')?.invalid && form.get('password')?.touched"
-      style="margin-top: 12px;">
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input type="password" formControlName="password" placeholder="Mínimo 6 caracteres"></ion-input>
-      <ion-note slot="error">Mínimo 6 caracteres</ion-note>
-    </ion-item>
-
-    <div class="ion-padding-start ion-padding-top"
-      *ngIf="form.get('password')?.touched && form.get('password')?.value">
-      <ion-text
-        [color]="form.get('password')?.value?.length >= 6 ? 'success' : 'medium'"
-        style="font-size: 13px; display: block;">
-        <ion-icon [name]="form.get('password')?.value?.length >= 6 ? 'checkmark-circle' : 'ellipse-outline'"></ion-icon>
-        Mínimo 6 caracteres ({{ form.get('password')?.value?.length || 0 }}/6)
-      </ion-text>
+    <div class="register-hero">
+      <div class="hero-icon-wrap">
+        <ion-icon name="person-add-outline"></ion-icon>
+      </div>
+      <p class="mw-subtitle">Completa tus datos para comenzar</p>
     </div>
 
-    <div class="ion-padding-top">
-      <ion-button expand="block" (click)="registrar()">
-        <ion-icon slot="start" name="person-add"></ion-icon>
-        Crear Cuenta
-      </ion-button>
+    <div class="mw-auth-card">
+      <form [formGroup]="form">
+
+        <ion-item
+          class="mw-field"
+          [class.ion-invalid]="form.get('nombre')?.invalid && form.get('nombre')?.touched">
+          <ion-label position="floating">Nombre completo</ion-label>
+          <ion-input type="text" formControlName="nombre" placeholder="Tu nombre" autocomplete="name"></ion-input>
+          <ion-note slot="error">El nombre es requerido</ion-note>
+        </ion-item>
+
+        <ion-item
+          class="mw-field"
+          [class.ion-invalid]="form.get('username')?.invalid && form.get('username')?.touched">
+          <ion-label position="floating">Nombre de usuario</ion-label>
+          <ion-input type="text" formControlName="username" placeholder="Elige un nombre de usuario" autocomplete="username"></ion-input>
+          <ion-note slot="error">El nombre de usuario es requerido</ion-note>
+        </ion-item>
+
+        <ion-item
+          class="mw-field"
+          [class.ion-invalid]="form.get('password')?.invalid && form.get('password')?.touched">
+          <ion-label position="floating">Contraseña</ion-label>
+          <ion-input type="password" formControlName="password" placeholder="Mínimo 6 caracteres" autocomplete="new-password"></ion-input>
+          <ion-note slot="error">Mínimo 6 caracteres</ion-note>
+        </ion-item>
+
+        <div class="password-strength"
+          *ngIf="form.get('password')?.touched && form.get('password')?.value">
+          <ion-icon
+            [name]="form.get('password')?.value?.length >= 6 ? 'checkmark-circle' : 'ellipse-outline'"
+            [class.ok]="form.get('password')?.value?.length >= 6">
+          </ion-icon>
+          <span [class.ok]="form.get('password')?.value?.length >= 6">
+            Mínimo 6 caracteres ({{ form.get('password')?.value?.length || 0 }}/6)
+          </span>
+        </div>
+
+        <ion-button
+          expand="block"
+          class="register-btn"
+          (click)="registrar()">
+          <ion-icon slot="start" name="person-add-outline"></ion-icon>
+          Crear Cuenta
+        </ion-button>
+
+      </form>
+
+      <div class="auth-footer">
+        <span class="mw-muted">¿Ya tienes cuenta?</span>
+        <ion-button fill="clear" class="link-btn" (click)="irALogin()">Inicia sesión</ion-button>
+      </div>
     </div>
 
-  </form>
+  </div>
 </ion-content>

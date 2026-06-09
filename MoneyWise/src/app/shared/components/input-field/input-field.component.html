@@ -1,4 +1,7 @@
-<ion-item [class.ion-invalid]="error">
+<ion-item
+  class="mw-field"
+  [class.ion-invalid]="error"
+  lines="inset">
   <ion-label position="floating">{{ label }}</ion-label>
   <ion-input
     [type]="type"

@@ -1,30 +1,40 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Comprobante ({{ fotoActiva + 1 }} / {{ fotos.length }})</ion-title>
+<ion-header class="ion-no-border">
+  <ion-toolbar class="gallery-toolbar">
+    <ion-title class="gallery-title">
+      Comprobante
+      <span class="gallery-counter" *ngIf="fotos.length > 1">{{ fotoActiva + 1 }} / {{ fotos.length }}</span>
+    </ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="cerrar()">
-        <ion-icon name="close"></ion-icon>
+      <ion-button (click)="cerrar()" aria-label="Cerrar visor">
+        <ion-icon slot="icon-only" name="close-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-text-center">
-  <ion-img [src]="fotos[fotoActiva]" class="full-photo"></ion-img>
+<ion-content class="gallery-content">
+  <div class="gallery-img-wrap">
+    <ion-img [src]="fotos[fotoActiva]" class="gallery-img"></ion-img>
+  </div>
 </ion-content>
 
-<ion-footer *ngIf="fotos.length > 1">
-  <ion-toolbar>
+<ion-footer class="ion-no-border" *ngIf="fotos.length > 1">
+  <ion-toolbar class="gallery-footer">
     <ion-buttons slot="start">
-      <ion-button [disabled]="fotoActiva === 0" (click)="anterior()">
-        <ion-icon name="chevron-back"></ion-icon>
-        Anterior
+      <ion-button [disabled]="fotoActiva === 0" (click)="anterior()" aria-label="Foto anterior">
+        <ion-icon slot="icon-only" name="chevron-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
+    <div class="gallery-dots">
+      <span
+        *ngFor="let f of fotos; let i = index"
+        class="gallery-dot"
+        [class.active]="i === fotoActiva">
+      </span>
+    </div>
     <ion-buttons slot="end">
-      <ion-button [disabled]="fotoActiva === fotos.length - 1" (click)="siguiente()">
-        Siguiente
-        <ion-icon name="chevron-forward"></ion-icon>
+      <ion-button [disabled]="fotoActiva === fotos.length - 1" (click)="siguiente()" aria-label="Foto siguiente">
+        <ion-icon slot="icon-only" name="chevron-forward-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>

@@ -1,0 +1,20 @@
+.amount-display {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1px;
+
+  .sign {
+    font-size: 0.85em;
+    margin-right: 1px;
+  }
+
+  &.amount-ingreso { color: var(--mw-success); }
+  &.amount-gasto   { color: var(--mw-danger); }
+  &.amount-neutral { color: var(--mw-text); }
+
+  &.size-small  { font-size: 0.9rem; }
+  &.size-medium { font-size: 1.05rem; }
+  &.size-large  { font-size: 1.7rem; font-weight: 800; }
+}

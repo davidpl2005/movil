@@ -1,49 +1,56 @@
-<ion-header>
-  <ion-toolbar color="primary">
+<ion-header class="ion-no-border">
+  <ion-toolbar class="mw-header">
     <ion-title>Transacciones</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="toggleOrden()">
-        <ion-icon slot="icon-only" [name]="ordenAscendente ? 'arrow-up' : 'arrow-down'"></ion-icon>
+      <ion-button
+        (click)="toggleOrden()"
+        [attr.aria-label]="ordenAscendente ? 'Ordenar descendente' : 'Ordenar ascendente'">
+        <ion-icon slot="icon-only" [name]="ordenAscendente ? 'arrow-up-outline' : 'arrow-down-outline'"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
- <app-filter-bar
-  [tipoSeleccionado]="tipoFiltro"
-  [categoriaSeleccionada]="categoriaFiltro"
-  (onTipoChange)="tipoFiltro = $event; aplicarFiltrosYOrden()"
-  (onCategoriaChange)="categoriaFiltro = $event; aplicarFiltrosYOrden()"
-  (onBuscarChange)="textoBusqueda = $event; aplicarFiltrosYOrden()">
-</app-filter-bar>
+<ion-content class="mw-page lista-content">
 
-  <ion-item style="--background: transparent; --border-color: transparent; padding: 4px 8px 0;">
-    <ion-label style="font-size: 0.8rem; color: rgba(255,255,255,0.45);">Ordenar por:</ion-label>
+  <!-- Filter bar -->
+  <app-filter-bar
+    [tipoSeleccionado]="tipoFiltro"
+    [categoriaSeleccionada]="categoriaFiltro"
+    (onTipoChange)="tipoFiltro = $event; aplicarFiltrosYOrden()"
+    (onCategoriaChange)="categoriaFiltro = $event; aplicarFiltrosYOrden()"
+    (onBuscarChange)="textoBusqueda = $event; aplicarFiltrosYOrden()">
+  </app-filter-bar>
+
+  <!-- Selector de criterio orden -->
+  <div class="sort-row">
+    <span class="sort-label">Ordenar por</span>
     <ion-select
       [(ngModel)]="criterioOrden"
       (ionChange)="aplicarOrden()"
       interface="popover"
-      style="font-size: 0.85rem; color: rgba(255,255,255,0.7);">
+      class="sort-select">
       <ion-select-option value="fecha">Fecha</ion-select-option>
       <ion-select-option value="monto">Monto</ion-select-option>
       <ion-select-option value="categoria">Categoría</ion-select-option>
     </ion-select>
-  </ion-item>
+  </div>
 
+  <!-- Empty state -->
   <app-empty-state
-    *ngIf="(transaccionesFiltradas).length === 0"
+    *ngIf="transaccionesFiltradas.length === 0"
     mensaje="No hay transacciones"
     icono="receipt-outline"
     accion="Agregar primera transacción"
     (onAccion)="abrirFormulario()">
   </app-empty-state>
 
-  <ion-list>
+  <!-- Lista -->
+  <ion-list class="txn-list" *ngIf="transaccionesFiltradas.length > 0">
     <ion-item-sliding *ngFor="let t of transaccionesFiltradas">
       <ion-item-options side="end">
-        <ion-item-option color="danger" (click)="eliminarSwipe(t.id)">
-          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        <ion-item-option color="danger" (click)="eliminarSwipe(t.id)" aria-label="Eliminar transacción">
+          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
         </ion-item-option>
       </ion-item-options>
       <app-transaction-item
@@ -53,9 +60,12 @@
     </ion-item-sliding>
   </ion-list>
 
+  <div class="mw-safe-bottom"></div>
+
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="abrirFormulario()">
+    <ion-fab-button (click)="abrirFormulario()" aria-label="Agregar transacción">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+
 </ion-content>
