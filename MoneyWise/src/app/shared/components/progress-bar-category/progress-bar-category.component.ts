@@ -4,6 +4,7 @@ import { Component, Input } from '@angular/core';
   standalone: false,
   selector: 'app-progress-bar-category',
   templateUrl: './progress-bar-category.component.html',
+  styleUrls: ['./progress-bar-category.component.scss']
 
 })
 export class ProgressBarCategoryComponent {

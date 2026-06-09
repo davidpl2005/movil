@@ -8,6 +8,7 @@ import { CATEGORIAS, TIPOS_TRANSACCION } from '../../../core/constants/app.const
   standalone: false,
   selector: 'app-transaction-form',
   templateUrl: './transaction-form.component.html',
+  styleUrls: ['./transaction-form.component.scss']
 })
 export class TransactionFormComponent implements OnInit {
   @Input() transaccion: Transaccion | null = null;

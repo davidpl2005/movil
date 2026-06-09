@@ -1,61 +1,82 @@
+:host { display: block; }
+
 .txn-item {
-  --background: var(--mw-surface);
+  --background: var(--mw-gradient-card);
   --border-color: transparent;
   --color: var(--mw-text);
-  --padding-start: 12px;
   --inner-padding-end: 12px;
-  --min-height: 64px;
-  border-radius: var(--mw-radius-md);
-  margin-bottom: 8px;
-  box-shadow: var(--mw-shadow-sm);
+  --min-height: 78px;
+  --padding-start: 12px;
   border: 1px solid var(--mw-border);
-  transition: transform 0.12s ease;
+  border-radius: var(--mw-radius-lg);
+  box-shadow: var(--mw-shadow-sm);
+  overflow: hidden;
+  transition: transform 0.14s ease, border-color 0.14s ease;
 
   &:active { transform: scale(0.99); }
 
-  app-category-icon {
-    margin-right: 12px;
-  }
+  app-category-icon { margin-right: 12px; }
 }
 
-.txn-label {
-  flex: 1;
+.txn-label { min-width: 0; }
 
-  .txn-title {
-    font-size: 0.92rem;
-    font-weight: 600;
-    color: var(--mw-text);
-    margin: 0 0 3px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+.txn-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
 
-  .txn-meta {
-    font-size: 0.76rem;
-    color: var(--mw-text-muted);
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    flex-wrap: nowrap;
-    overflow: hidden;
+.txn-title {
+  color: var(--mw-text);
+  font-size: 0.96rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  margin: 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
-    .txn-dot {
-      opacity: 0.5;
-    }
-  }
+.type-pill {
+  display: none;
+  flex: 0 0 auto;
+  padding: 5px 8px;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 900;
+
+  &.income { background: var(--mw-success-soft); color: var(--mw-success); }
+  &.expense { background: var(--mw-danger-soft); color: var(--mw-danger); }
+}
+
+.txn-meta {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 6px 0 0;
+  color: var(--mw-text-muted);
+  font-size: 0.76rem;
+  overflow: hidden;
+  white-space: nowrap;
+
+  ion-icon { font-size: 14px; }
+  .txn-dot { opacity: 0.55; }
 }
 
 .txn-end {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 4px;
+  gap: 5px;
   padding-left: 8px;
 }
 
 .txn-img-icon {
-  font-size: 13px;
   color: var(--mw-text-muted);
-  opacity: 0.6;
+  font-size: 14px;
+  opacity: 0.75;
 }
+
+@media (min-width: 420px) { .type-pill { display: inline-flex; } }

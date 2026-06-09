@@ -1,102 +1,70 @@
 <ion-header class="ion-no-border">
   <ion-toolbar class="mw-header">
-    <ion-title>Mi Perfil</ion-title>
+    <ion-title>Perfil</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="mw-page">
-  <div class="profile-scroll">
-
-    <!-- Avatar card -->
-    <div class="profile-hero">
-      <div class="avatar-circle">
-        <ion-icon name="person-outline"></ion-icon>
+<ion-content class="mw-page profile-content">
+  <main class="mw-screen profile-screen">
+    <section class="profile-hero mw-glass-card">
+      <div class="avatar-circle"><ion-icon name="person-outline"></ion-icon></div>
+      <div>
+        <p class="mw-kicker">Mi cuenta</p>
+        <h1>{{ usuario?.nombre }}</h1>
+        <p>@{{ usuario?.username }}</p>
       </div>
-      <h2 class="mw-title">{{ usuario?.nombre }}</h2>
-      <p class="mw-muted">@{{ usuario?.username }}</p>
-    </div>
+    </section>
 
-    <!-- Nota informativa -->
-    <div class="info-note">
-      <ion-icon name="information-circle-outline"></ion-icon>
-      <span>Para aplicar cualquier cambio debes ingresar tu contraseña actual.</span>
-    </div>
+    <section class="info-note">
+      <ion-icon name="shield-checkmark-outline"></ion-icon>
+      <span>Por seguridad, confirma tu contraseña actual antes de guardar cambios.</span>
+    </section>
 
-    <!-- Formulario -->
-    <div class="form-section">
+    <section class="form-card">
       <p class="mw-section-title">Actualizar datos</p>
-
-      <ion-item
-        class="mw-field"
-        [class.ion-invalid]="form.get('nombre')?.invalid && form.get('nombre')?.touched">
+      <ion-item class="mw-field" [class.ion-invalid]="form.get('nombre')?.invalid && form.get('nombre')?.touched">
+        <ion-icon name="id-card-outline" slot="start" aria-hidden="true"></ion-icon>
         <ion-label position="floating">Nombre completo</ion-label>
         <ion-input [formControl]="$any(form.get('nombre'))" type="text"></ion-input>
         <ion-note slot="error">El nombre es requerido</ion-note>
       </ion-item>
-    </div>
 
-    <div class="form-section">
       <p class="mw-section-title">Cambiar contraseña</p>
-
-      <ion-item
-        class="mw-field"
-        [class.ion-invalid]="form.get('passwordNueva')?.invalid && form.get('passwordNueva')?.touched">
+      <ion-item class="mw-field" [class.ion-invalid]="form.get('passwordNueva')?.invalid && form.get('passwordNueva')?.touched">
+        <ion-icon name="lock-closed-outline" slot="start" aria-hidden="true"></ion-icon>
         <ion-label position="floating">Nueva contraseña (opcional)</ion-label>
         <ion-input [formControl]="$any(form.get('passwordNueva'))" type="password"></ion-input>
         <ion-note slot="error">Mínimo 6 caracteres</ion-note>
       </ion-item>
 
-      <div class="password-strength"
-        *ngIf="form.get('passwordNueva')?.touched && form.get('passwordNueva')?.value">
-        <ion-icon
-          [name]="form.get('passwordNueva')?.value?.length >= 6 ? 'checkmark-circle' : 'ellipse-outline'"
-          [class.ok]="form.get('passwordNueva')?.value?.length >= 6">
-        </ion-icon>
-        <span [class.ok]="form.get('passwordNueva')?.value?.length >= 6">
-          Mínimo 6 caracteres ({{ form.get('passwordNueva')?.value?.length || 0 }}/6)
-        </span>
+      <div class="password-strength" *ngIf="form.get('passwordNueva')?.touched && form.get('passwordNueva')?.value">
+        <ion-icon [name]="form.get('passwordNueva')?.value?.length >= 6 ? 'checkmark-circle' : 'ellipse-outline'" [class.ok]="form.get('passwordNueva')?.value?.length >= 6"></ion-icon>
+        <span [class.ok]="form.get('passwordNueva')?.value?.length >= 6">{{ form.get('passwordNueva')?.value?.length || 0 }}/6 caracteres mínimos</span>
       </div>
-    </div>
 
-    <div class="form-section">
-      <p class="mw-section-title confirm-label">* Confirmación requerida</p>
-
-      <ion-item
-        class="mw-field"
-        [class.ion-invalid]="form.get('passwordActual')?.touched && !form.get('passwordActual')?.value">
+      <p class="mw-section-title confirm-label">Confirmación requerida</p>
+      <ion-item class="mw-field" [class.ion-invalid]="form.get('passwordActual')?.touched && !form.get('passwordActual')?.value">
+        <ion-icon name="key-outline" slot="start" aria-hidden="true"></ion-icon>
         <ion-label position="floating">Contraseña actual *</ion-label>
         <ion-input [formControl]="$any(form.get('passwordActual'))" type="password"></ion-input>
         <ion-note slot="error">Debes ingresar tu contraseña actual</ion-note>
       </ion-item>
-    </div>
+    </section>
 
-    <div class="form-section">
-      <p class="mw-section-title">Apariencia</p>
-
-      <div class="theme-toggle-card">
-        <div class="theme-toggle-info">
-          <ion-icon
-            [name]="themeService.esModoOscuro ? 'moon-outline' : 'sunny-outline'"
-            class="theme-icon"
-            [class.dark]="themeService.esModoOscuro">
-          </ion-icon>
-          <span>{{ themeService.esModoOscuro ? 'Modo Oscuro' : 'Modo Claro' }}</span>
+    <section class="theme-toggle-card">
+      <div class="theme-toggle-info">
+        <ion-icon [name]="themeService.esModoOscuro ? 'moon-outline' : 'sunny-outline'" class="theme-icon" [class.dark]="themeService.esModoOscuro"></ion-icon>
+        <div>
+          <strong>{{ themeService.esModoOscuro ? 'Modo oscuro' : 'Modo claro' }}</strong>
+          <span>Personaliza la apariencia de la app.</span>
         </div>
-        <ion-toggle
-          [checked]="themeService.esModoOscuro"
-          (ionChange)="toggleTema()"
-          aria-label="Alternar tema claro/oscuro">
-        </ion-toggle>
       </div>
-    </div>
+      <ion-toggle [checked]="themeService.esModoOscuro" (ionChange)="toggleTema()" aria-label="Alternar tema claro/oscuro"></ion-toggle>
+    </section>
 
-    <div class="save-section">
-      <ion-button expand="block" class="save-btn" (click)="guardar()">
-        <ion-icon slot="start" name="save-outline"></ion-icon>
-        Guardar Cambios
-      </ion-button>
-    </div>
-
-    <div class="mw-safe-bottom"></div>
-  </div>
+    <ion-button expand="block" class="mw-button save-btn" (click)="guardar()">
+      <ion-icon slot="start" name="save-outline"></ion-icon>
+      Guardar cambios
+    </ion-button>
+  </main>
 </ion-content>

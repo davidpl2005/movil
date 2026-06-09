@@ -1,71 +1,73 @@
 <ion-header class="ion-no-border">
   <ion-toolbar class="mw-header">
     <ion-title>
-      <span class="brand-title">MoneyWise</span>
+      <span class="mw-brand">
+        <span class="mw-brand-mark"><ion-icon name="wallet-outline"></ion-icon></span>
+        <span class="mw-brand-text">MoneyWise</span>
+      </span>
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="logout()" aria-label="Cerrar sesión">
+      <ion-button fill="clear" (click)="logout()" aria-label="Cerrar sesión">
         <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="mw-page">
-  <div class="dashboard-scroll">
-
-    <!-- Hero saludo -->
-    <div class="dashboard-hero" *ngIf="usuario">
-      <p class="greeting">Hola, <strong>{{ usuario.nombre }}</strong> 👋</p>
-      <p class="greeting-sub">Aquí está tu resumen financiero</p>
-    </div>
-
-    <!-- Cards principales -->
-    <ion-grid class="mw-dashboard-grid">
-      <ion-row>
-        <ion-col size="12">
-          <app-dashboard-card
-            titulo="Saldo Actual"
-            [monto]="resumen.saldoActual"
-            tipo="saldo"
-            icono="wallet-outline">
-          </app-dashboard-card>
-        </ion-col>
-        <ion-col size="6">
-          <app-dashboard-card
-            titulo="Ingresos del Mes"
-            [monto]="resumen.totalIngresosMes"
-            tipo="ingreso"
-            icono="arrow-up-circle-outline">
-          </app-dashboard-card>
-        </ion-col>
-        <ion-col size="6">
-          <app-dashboard-card
-            titulo="Gastos del Mes"
-            [monto]="resumen.totalGastosMes"
-            tipo="gasto"
-            icono="arrow-down-circle-outline">
-          </app-dashboard-card>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-
-    <!-- Gráfico -->
-    <ng-container *ngIf="resumen.gastosPorCategoria.length > 0">
-      <p class="mw-section-title" style="padding-left: 16px;">Distribución de Gastos</p>
-      <div class="chart-card mw-card">
-        <app-pie-chart [datos]="resumen.gastosPorCategoria"></app-pie-chart>
+<ion-content class="mw-page dashboard-content">
+  <main class="mw-screen dashboard-screen">
+    <section class="dashboard-hero mw-glass-card" *ngIf="usuario">
+      <div class="hero-copy">
+        <p class="mw-kicker">Panel financiero</p>
+        <h1>Hola, {{ usuario.nombre }}</h1>
+        <p>Tu dinero organizado en ingresos, gastos y categorías del mes.</p>
       </div>
-    </ng-container>
+      <div class="balance-card">
+        <span>Saldo actual</span>
+        <strong>{{ resumen.saldoActual | currencyFormat }}</strong>
+        <small [class.positive]="resumen.saldoActual >= 0" [class.negative]="resumen.saldoActual < 0">
+          {{ resumen.saldoActual >= 0 ? 'Balance positivo' : 'Balance por revisar' }}
+        </small>
+      </div>
+    </section>
 
-    <!-- Empty state si no hay gastos -->
+    <section class="metrics-grid" aria-label="Resumen del mes">
+      <app-dashboard-card titulo="Ingresos" [monto]="resumen.totalIngresosMes" tipo="ingreso" icono="trending-up-outline"></app-dashboard-card>
+      <app-dashboard-card titulo="Gastos" [monto]="resumen.totalGastosMes" tipo="gasto" icono="trending-down-outline"></app-dashboard-card>
+      <app-dashboard-card titulo="Saldo" [monto]="resumen.saldoActual" tipo="saldo" icono="sparkles-outline"></app-dashboard-card>
+    </section>
+
+    <section class="insights-card mw-glass-card" *ngIf="resumen.gastosPorCategoria.length > 0">
+      <div class="section-head">
+        <div>
+          <p class="mw-kicker">Análisis</p>
+          <h2>Distribución de gastos</h2>
+        </div>
+        <span class="mw-chip">{{ resumen.gastosPorCategoria.length }} categorías</span>
+      </div>
+
+      <div class="chart-layout">
+        <div class="chart-wrap">
+          <app-pie-chart [datos]="resumen.gastosPorCategoria"></app-pie-chart>
+        </div>
+        <div class="category-list">
+          <app-progress-bar-category
+            *ngFor="let item of resumen.gastosPorCategoria"
+            [categoria]="item.categoria"
+            [monto]="item.monto"
+            [porcentaje]="item.porcentaje"
+            [color]="item.color">
+          </app-progress-bar-category>
+        </div>
+      </div>
+    </section>
+
     <app-empty-state
       *ngIf="resumen.gastosPorCategoria.length === 0"
-      mensaje="No hay gastos registrados este mes"
-      icono="bar-chart-outline"
-      accion="Agregar Transacción">
+      mensaje="Aún no hay gastos este mes. Registra una transacción para activar tus gráficos."
+      icono="analytics-outline"
+      accion="Ir a transacciones"
+      (onAccion)="irATransacciones()">
     </app-empty-state>
-
-    <div class="mw-safe-bottom"></div>
-  </div>
+  </main>
 </ion-content>

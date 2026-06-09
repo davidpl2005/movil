@@ -1,7 +1,11 @@
 .pie-chart-wrap {
   position: relative;
-  width: 100%;
-  max-width: 300px;
+  width: min(100%, 320px);
+  min-height: 250px;
   margin: 0 auto;
-  padding: 8px 0 4px;
+  padding: 8px 0;
+  display: grid;
+  place-items: center;
 }
+
+canvas { max-width: 100%; }

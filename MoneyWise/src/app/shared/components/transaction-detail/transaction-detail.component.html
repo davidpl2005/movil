@@ -1,12 +1,9 @@
-<div class="detail-card mw-card">
-
-  <!-- Hero monto -->
-  <div class="detail-hero">
+<article class="detail-card">
+  <section class="detail-hero">
     <app-category-icon [categoria]="transaccion.categoria" tamano="medium"></app-category-icon>
-    <div class="detail-amount">
-      <app-amount-display [monto]="transaccion.monto" [tipo]="transaccion.tipo" tamano="large"></app-amount-display>
-    </div>
-    <p class="detail-date">{{ transaccion.fecha | dateFormat }}</p>
+    <p class="mw-kicker">{{ transaccion.tipo === 'ingreso' ? 'Ingreso registrado' : 'Gasto registrado' }}</p>
+    <div class="detail-amount"><app-amount-display [monto]="transaccion.monto" [tipo]="transaccion.tipo" tamano="large"></app-amount-display></div>
+    <p class="detail-date"><ion-icon name="calendar-clear-outline"></ion-icon>{{ transaccion.fecha | dateFormat }}</p>
 
     <div class="detail-badges">
       <span class="mw-badge" [class.mw-badge--ingreso]="transaccion.tipo === 'ingreso'" [class.mw-badge--gasto]="transaccion.tipo === 'gasto'">
@@ -15,14 +12,9 @@
       </span>
       <app-category-badge [categoria]="transaccion.categoria"></app-category-badge>
     </div>
-  </div>
+  </section>
 
-  <!-- Divisor -->
-  <div class="detail-divider"></div>
-
-  <!-- Campos -->
-  <div class="detail-fields">
-
+  <section class="detail-fields">
     <div class="detail-field" *ngIf="transaccion.descripcion">
       <span class="field-label">Descripción</span>
       <span class="field-value">{{ transaccion.descripcion }}</span>
@@ -30,19 +22,14 @@
 
     <div class="detail-field" *ngIf="transaccion.comprobante">
       <span class="field-label">Comprobante</span>
-      <div class="comprobante-wrap" (click)="onVerComprobante.emit()">
+      <button type="button" class="comprobante-wrap" (click)="onVerComprobante.emit()">
         <app-photo-preview [src]="transaccion.comprobante" size="medium" (onClick)="onVerComprobante.emit()"></app-photo-preview>
-        <span class="comprobante-link">
-          <ion-icon name="expand-outline"></ion-icon>
-          Ver imagen
-        </span>
-      </div>
+        <span class="comprobante-link"><ion-icon name="expand-outline"></ion-icon> Ver imagen completa</span>
+      </button>
     </div>
+  </section>
 
-  </div>
-
-  <!-- Acciones -->
-  <div class="detail-actions">
+  <section class="detail-actions">
     <ion-button expand="block" fill="outline" class="btn-edit" (click)="onEdit.emit()">
       <ion-icon slot="start" name="create-outline"></ion-icon>
       Editar
@@ -51,6 +38,5 @@
       <ion-icon slot="start" name="trash-outline"></ion-icon>
       Eliminar
     </ion-button>
-  </div>
-
-</div>
+  </section>
+</article>

@@ -5,6 +5,7 @@ import { Transaccion } from '../../../core/models/transaccion.model';
   standalone: false,
   selector: 'app-transaction-detail',
   templateUrl: './transaction-detail.component.html',
+  styleUrls: ['./transaction-detail.component.scss']
 })
 export class TransactionDetailComponent {
   @Input() transaccion!: Transaccion;

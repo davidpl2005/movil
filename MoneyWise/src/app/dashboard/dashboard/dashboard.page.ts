@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { TransaccionService } from '../../core/services/transaccion.service';
 import { AnalyticsService } from '../../core/services/analytics.service';
@@ -27,7 +28,8 @@ export class DashboardPage implements OnInit, OnDestroy {
     private authService: AuthService,
     private transaccionService: TransaccionService,
     private analyticsService: AnalyticsService,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -39,6 +41,10 @@ export class DashboardPage implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.sub?.unsubscribe();
+  }
+
+  irATransacciones() {
+    this.router.navigate(['/tabs/transacciones']);
   }
 
   async logout() {

@@ -1,10 +1,8 @@
 <ion-header class="ion-no-border">
   <ion-toolbar class="mw-header">
-    <ion-title>Transacciones</ion-title>
+    <ion-title>Movimientos</ion-title>
     <ion-buttons slot="end">
-      <ion-button
-        (click)="toggleOrden()"
-        [attr.aria-label]="ordenAscendente ? 'Ordenar descendente' : 'Ordenar ascendente'">
+      <ion-button (click)="toggleOrden()" [attr.aria-label]="ordenAscendente ? 'Ordenar descendente' : 'Ordenar ascendente'">
         <ion-icon slot="icon-only" [name]="ordenAscendente ? 'arrow-up-outline' : 'arrow-down-outline'"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -12,60 +10,59 @@
 </ion-header>
 
 <ion-content class="mw-page lista-content">
+  <main class="mw-screen transactions-screen">
+    <section class="transactions-hero mw-glass-card">
+      <div>
+        <p class="mw-kicker">Historial</p>
+        <h1>Transacciones</h1>
+        <p>Busca, filtra y ordena todos tus ingresos y gastos.</p>
+      </div>
+      <span class="hero-count">{{ transaccionesFiltradas.length }} / {{ transacciones.length }}</span>
+    </section>
 
-  <!-- Filter bar -->
-  <app-filter-bar
-    [tipoSeleccionado]="tipoFiltro"
-    [categoriaSeleccionada]="categoriaFiltro"
-    (onTipoChange)="tipoFiltro = $event; aplicarFiltrosYOrden()"
-    (onCategoriaChange)="categoriaFiltro = $event; aplicarFiltrosYOrden()"
-    (onBuscarChange)="textoBusqueda = $event; aplicarFiltrosYOrden()">
-  </app-filter-bar>
+    <app-filter-bar
+      [tipoSeleccionado]="tipoFiltro"
+      [categoriaSeleccionada]="categoriaFiltro"
+      (onTipoChange)="tipoFiltro = $event; aplicarFiltrosYOrden()"
+      (onCategoriaChange)="categoriaFiltro = $event; aplicarFiltrosYOrden()"
+      (onBuscarChange)="textoBusqueda = $event; aplicarFiltrosYOrden()">
+    </app-filter-bar>
 
-  <!-- Selector de criterio orden -->
-  <div class="sort-row">
-    <span class="sort-label">Ordenar por</span>
-    <ion-select
-      [(ngModel)]="criterioOrden"
-      (ionChange)="aplicarOrden()"
-      interface="popover"
-      class="sort-select">
-      <ion-select-option value="fecha">Fecha</ion-select-option>
-      <ion-select-option value="monto">Monto</ion-select-option>
-      <ion-select-option value="categoria">Categoría</ion-select-option>
-    </ion-select>
-  </div>
+    <section class="sort-card">
+      <div class="sort-copy">
+        <span>Ordenar por</span>
+        <strong>{{ criterioOrden | titlecase }}</strong>
+      </div>
+      <ion-select [(ngModel)]="criterioOrden" (ionChange)="aplicarOrden()" interface="popover" class="sort-select" aria-label="Criterio de orden">
+        <ion-select-option value="fecha">Fecha</ion-select-option>
+        <ion-select-option value="monto">Monto</ion-select-option>
+        <ion-select-option value="categoria">Categoría</ion-select-option>
+      </ion-select>
+    </section>
 
-  <!-- Empty state -->
-  <app-empty-state
-    *ngIf="transaccionesFiltradas.length === 0"
-    mensaje="No hay transacciones"
-    icono="receipt-outline"
-    accion="Agregar primera transacción"
-    (onAccion)="abrirFormulario()">
-  </app-empty-state>
+    <app-empty-state
+      *ngIf="transaccionesFiltradas.length === 0"
+      mensaje="No encontramos movimientos con esos filtros. Prueba otra búsqueda o crea una transacción."
+      icono="receipt-outline"
+      accion="Agregar transacción"
+      (onAccion)="abrirFormulario()">
+    </app-empty-state>
 
-  <!-- Lista -->
-  <ion-list class="txn-list" *ngIf="transaccionesFiltradas.length > 0">
-    <ion-item-sliding *ngFor="let t of transaccionesFiltradas">
-      <ion-item-options side="end">
-        <ion-item-option color="danger" (click)="eliminarSwipe(t.id)" aria-label="Eliminar transacción">
-          <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
-        </ion-item-option>
-      </ion-item-options>
-      <app-transaction-item
-        [transaccion]="t"
-        (onClick)="verDetalle(t.id)">
-      </app-transaction-item>
-    </ion-item-sliding>
-  </ion-list>
-
-  <div class="mw-safe-bottom"></div>
+    <ion-list class="txn-list" *ngIf="transaccionesFiltradas.length > 0">
+      <ion-item-sliding *ngFor="let t of transaccionesFiltradas">
+        <ion-item-options side="end">
+          <ion-item-option color="danger" (click)="eliminarSwipe(t.id)" aria-label="Eliminar transacción">
+            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+        <app-transaction-item [transaccion]="t" (onClick)="verDetalle(t.id)"></app-transaction-item>
+      </ion-item-sliding>
+    </ion-list>
+  </main>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="abrirFormulario()" aria-label="Agregar transacción">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-
 </ion-content>

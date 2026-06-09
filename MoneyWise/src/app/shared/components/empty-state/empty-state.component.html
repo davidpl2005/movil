@@ -1,13 +1,8 @@
-<div class="empty-wrap">
-  <div class="empty-icon-wrap">
-    <ion-icon [name]="icono"></ion-icon>
-  </div>
+<section class="empty-wrap" aria-live="polite">
+  <div class="empty-icon-wrap"><ion-icon [name]="icono"></ion-icon></div>
   <p class="empty-msg">{{ mensaje }}</p>
-  <ion-button
-    *ngIf="accion"
-    fill="outline"
-    class="empty-btn"
-    (click)="onAccion.emit()">
+  <ion-button *ngIf="accion" class="empty-btn" fill="outline" (click)="onAccion.emit()">
+    <ion-icon slot="start" name="add-circle-outline"></ion-icon>
     {{ accion }}
   </ion-button>
-</div>
+</section>

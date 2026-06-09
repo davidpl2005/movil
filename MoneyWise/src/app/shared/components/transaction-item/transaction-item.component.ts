@@ -5,6 +5,7 @@ import { Transaccion } from '../../../core/models/transaccion.model';
   standalone: false,
   selector: 'app-transaction-item',
   templateUrl: './transaction-item.component.html',
+  styleUrls: ['./transaction-item.component.scss']
 
 })
 export class TransactionItemComponent {

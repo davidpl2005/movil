@@ -1,14 +1,2 @@
-ion-toolbar.mw-header {
-  --background: var(--mw-surface);
-  --color: var(--mw-text);
-  --border-width: 0;
-  box-shadow: var(--mw-shadow-sm);
-}
-
-ion-content.mw-page {
-  --background: var(--mw-bg);
-}
-
-.detail-scroll {
-  padding: 16px 16px 0;
-}
+.detail-content { --background: transparent; }
+.detail-screen { display: block; }

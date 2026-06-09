@@ -7,23 +7,10 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="mw-page">
-  <div class="detail-scroll">
+<ion-content class="mw-page detail-content">
+  <main class="mw-screen detail-screen">
+    <app-transaction-detail *ngIf="transaccion" [transaccion]="transaccion" (onEdit)="editar()" (onDelete)="eliminar()" (onVerComprobante)="verComprobante()"></app-transaction-detail>
 
-    <app-transaction-detail
-      *ngIf="transaccion"
-      [transaccion]="transaccion"
-      (onEdit)="editar()"
-      (onDelete)="eliminar()"
-      (onVerComprobante)="verComprobante()">
-    </app-transaction-detail>
-
-    <app-empty-state
-      *ngIf="!transaccion"
-      mensaje="Transacción no encontrada"
-      icono="alert-circle-outline">
-    </app-empty-state>
-
-    <div class="mw-safe-bottom"></div>
-  </div>
+    <app-empty-state *ngIf="!transaccion" mensaje="No encontramos esta transacción. Puede haber sido eliminada." icono="alert-circle-outline"></app-empty-state>
+  </main>
 </ion-content>

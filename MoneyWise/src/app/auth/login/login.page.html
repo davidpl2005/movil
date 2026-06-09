@@ -1,58 +1,65 @@
-<ion-content class="mw-page">
-  <div class="mw-auth">
-
-    <div class="mw-auth-hero">
-      <div class="hero-icon-wrap">
-        <ion-icon name="wallet"></ion-icon>
+<ion-content class="mw-page auth-content">
+  <div class="auth-shell">
+    <section class="auth-hero-panel" aria-label="Presentación de MoneyWise">
+      <div class="brand-lockup">
+        <span class="brand-mark"><ion-icon name="wallet-outline"></ion-icon></span>
+        <span class="brand-name">MoneyWise</span>
       </div>
-      <h1 class="mw-title">MoneyWise</h1>
-      <p class="mw-subtitle">Controla tus finanzas personales</p>
-    </div>
 
-    <div class="mw-auth-card">
-      <form [formGroup]="form">
+      <div class="hero-copy">
+        <p class="mw-kicker">Finanzas claras</p>
+        <h1>Controla tu dinero sin perder tiempo.</h1>
+        <p>Visualiza saldo, gastos, ingresos y comprobantes desde una experiencia móvil más limpia, rápida y segura.</p>
+      </div>
 
-        <ion-item
-          class="mw-field"
-          [class.ion-invalid]="form.get('username')?.invalid && form.get('username')?.touched">
-          <ion-label position="floating">Nombre de usuario</ion-label>
-          <ion-input
-            type="text"
-            formControlName="username"
-            placeholder="Tu nombre de usuario"
-            autocomplete="username">
-          </ion-input>
+      <div class="hero-metrics" aria-label="Beneficios principales">
+        <div>
+          <strong>3</strong>
+          <span>vistas clave</span>
+        </div>
+        <div>
+          <strong>24/7</strong>
+          <span>control local</span>
+        </div>
+        <div>
+          <strong>UX</strong>
+          <span>renovada</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="auth-form-panel" aria-label="Inicio de sesión">
+      <div class="form-heading">
+        <p class="mw-kicker">Bienvenido</p>
+        <h2>Inicia sesión</h2>
+        <p>Entra para revisar tu resumen financiero y registrar movimientos.</p>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="login()" novalidate>
+        <ion-item class="mw-field" [class.ion-invalid]="form.get('username')?.invalid && form.get('username')?.touched">
+          <ion-icon name="person-outline" slot="start" aria-hidden="true"></ion-icon>
+          <ion-label position="floating">Usuario</ion-label>
+          <ion-input type="text" formControlName="username" placeholder="tu_usuario" autocomplete="username"></ion-input>
           <ion-note slot="error">El nombre de usuario es requerido</ion-note>
         </ion-item>
 
-        <ion-item
-          class="mw-field"
-          [class.ion-invalid]="form.get('password')?.invalid && form.get('password')?.touched">
+        <ion-item class="mw-field" [class.ion-invalid]="form.get('password')?.invalid && form.get('password')?.touched">
+          <ion-icon name="lock-closed-outline" slot="start" aria-hidden="true"></ion-icon>
           <ion-label position="floating">Contraseña</ion-label>
-          <ion-input
-            type="password"
-            formControlName="password"
-            placeholder="Mínimo 6 caracteres"
-            autocomplete="current-password">
-          </ion-input>
+          <ion-input type="password" formControlName="password" placeholder="Mínimo 6 caracteres" autocomplete="current-password"></ion-input>
           <ion-note slot="error">La contraseña debe tener mínimo 6 caracteres</ion-note>
         </ion-item>
 
-        <ion-button
-          expand="block"
-          class="mw-button login-btn"
-          (click)="login()">
+        <ion-button expand="block" type="submit" class="mw-button login-btn">
           <ion-icon slot="start" name="log-in-outline"></ion-icon>
-          Iniciar Sesión
+          Entrar a mi panel
         </ion-button>
-
       </form>
 
       <div class="auth-footer">
-        <span class="mw-muted">¿No tienes cuenta?</span>
-        <ion-button fill="clear" class="link-btn" (click)="irARegistro()">Regístrate</ion-button>
+        <span>¿Aún no tienes cuenta?</span>
+        <ion-button fill="clear" class="link-btn" (click)="irARegistro()">Crear cuenta</ion-button>
       </div>
-    </div>
-
+    </section>
   </div>
 </ion-content>

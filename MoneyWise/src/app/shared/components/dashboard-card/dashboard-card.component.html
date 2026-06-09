@@ -1,11 +1,7 @@
-<div class="dc-card" [class.dc-saldo]="tipo === 'saldo'" [class.dc-ingreso]="tipo === 'ingreso'" [class.dc-gasto]="tipo === 'gasto'">
-  <div class="dc-top">
-    <div class="dc-icon-wrap">
-      <ion-icon [name]="icono"></ion-icon>
-    </div>
+<article class="dc-card" [class.dc-saldo]="tipo === 'saldo'" [class.dc-ingreso]="tipo === 'ingreso'" [class.dc-gasto]="tipo === 'gasto'">
+  <div class="dc-icon-wrap"><ion-icon [name]="icono"></ion-icon></div>
+  <div class="dc-copy">
     <span class="dc-label">{{ titulo }}</span>
+    <strong class="dc-amount">{{ monto | currencyFormat }}</strong>
   </div>
-  <div class="dc-amount">
-    {{ monto | currencyFormat }}
-  </div>
-</div>
+</article>
