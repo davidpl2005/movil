@@ -15,6 +15,10 @@
 </ion-header>
 
 <ion-content class="mw-page dashboard-content">
+  <ion-refresher slot="fixed" (ionRefresh)="refrescar($event)">
+    <ion-refresher-content pullingIcon="chevron-down-circle-outline" pullingText="Desliza para actualizar" refreshingSpinner="crescent" refreshingText="Actualizando panel..."></ion-refresher-content>
+  </ion-refresher>
+
   <main class="mw-screen dashboard-screen">
     <section class="dashboard-hero mw-glass-card" *ngIf="usuario">
       <div class="hero-copy">

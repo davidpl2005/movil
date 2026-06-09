@@ -46,7 +46,10 @@
         <ion-item class="mw-field" [class.ion-invalid]="form.get('password')?.invalid && form.get('password')?.touched">
           <ion-icon name="lock-closed-outline" slot="start" aria-hidden="true"></ion-icon>
           <ion-label position="floating">Contraseña</ion-label>
-          <ion-input type="password" formControlName="password" placeholder="Mínimo 6 caracteres" autocomplete="current-password"></ion-input>
+          <ion-input [type]="mostrarPassword ? 'text' : 'password'" formControlName="password" placeholder="Mínimo 6 caracteres" autocomplete="current-password"></ion-input>
+          <ion-button slot="end" fill="clear" class="password-toggle" type="button" (click)="togglePasswordVisibility()" [attr.aria-label]="mostrarPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
+            <ion-icon slot="icon-only" [name]="mostrarPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+          </ion-button>
           <ion-note slot="error">La contraseña debe tener mínimo 6 caracteres</ion-note>
         </ion-item>
 

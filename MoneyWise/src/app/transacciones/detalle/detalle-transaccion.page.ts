@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController, ModalController, ToastController } from '@ionic/angular';
+import { AlertController, ModalController, ToastController, RefresherCustomEvent } from '@ionic/angular';
 import { TransaccionService } from '../../core/services/transaccion.service';
 import { Transaccion } from '../../core/models/transaccion.model';
 import { TransactionFormComponent } from '../../shared/components/transaction-form/transaction-form.component';
@@ -14,6 +14,7 @@ import { PhotoGalleryModalComponent } from '../../shared/components/photo-galler
 })
 export class DetalleTransaccionPage implements OnInit {
   transaccion: Transaccion | undefined;
+  private transaccionId: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -25,8 +26,23 @@ export class DetalleTransaccionPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) this.transaccion = this.transaccionService.getById(id);
+    this.transaccionId = this.route.snapshot.paramMap.get('id');
+    this.cargarDetalle();
+  }
+
+  async refrescar(event?: RefresherCustomEvent) {
+    try {
+      await this.transaccionService.refrescar();
+      this.cargarDetalle();
+    } finally {
+      event?.target.complete();
+    }
+  }
+
+  private cargarDetalle() {
+    if (this.transaccionId) {
+      this.transaccion = this.transaccionService.getById(this.transaccionId);
+    }
   }
 
   async verComprobante() {
@@ -50,7 +66,7 @@ export class DetalleTransaccionPage implements OnInit {
     modal.onDidDismiss().then(async ({ data }) => {
       if (data && this.transaccion) {
         await this.transaccionService.editar(this.transaccion.id, data);
-        this.transaccion = this.transaccionService.getById(this.transaccion.id);
+        this.cargarDetalle();
       }
     });
 
@@ -82,4 +98,3 @@ export class DetalleTransaccionPage implements OnInit {
     await alert.present();
   }
 }
-

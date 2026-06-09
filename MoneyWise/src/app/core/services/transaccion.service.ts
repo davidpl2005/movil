@@ -18,7 +18,7 @@ export class TransaccionService {
     await this.cargarTransacciones();
   }
 
-  private async cargarTransacciones(): Promise<void> {
+  async cargarTransacciones(): Promise<void> {
     const userId = this.authService.currentUser?.id;
     if (!userId) {
       this.transaccionesSubject.next([]);
@@ -71,6 +71,10 @@ export class TransaccionService {
 
   async eliminar(id: string): Promise<void> {
     await this.firestoreService.delete('transacciones', id);
+    await this.cargarTransacciones();
+  }
+
+  async refrescar(): Promise<void> {
     await this.cargarTransacciones();
   }
 

@@ -10,6 +10,10 @@
 </ion-header>
 
 <ion-content class="mw-page lista-content">
+  <ion-refresher slot="fixed" (ionRefresh)="refrescar($event)">
+    <ion-refresher-content pullingIcon="chevron-down-circle-outline" pullingText="Desliza para actualizar" refreshingSpinner="crescent" refreshingText="Actualizando movimientos..."></ion-refresher-content>
+  </ion-refresher>
+
   <main class="mw-screen transactions-screen">
     <section class="transactions-hero mw-glass-card">
       <div>
@@ -23,6 +27,7 @@
     <app-filter-bar
       [tipoSeleccionado]="tipoFiltro"
       [categoriaSeleccionada]="categoriaFiltro"
+      [categorias]="categoriasDisponibles"
       (onTipoChange)="tipoFiltro = $event; aplicarFiltrosYOrden()"
       (onCategoriaChange)="categoriaFiltro = $event; aplicarFiltrosYOrden()"
       (onBuscarChange)="textoBusqueda = $event; aplicarFiltrosYOrden()">

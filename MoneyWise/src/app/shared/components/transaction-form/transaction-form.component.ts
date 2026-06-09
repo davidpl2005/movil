@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { Transaccion } from '../../../core/models/transaccion.model';
-import { CATEGORIAS, TIPOS_TRANSACCION } from '../../../core/constants/app.constants';
+import { TIPOS_TRANSACCION } from '../../../core/constants/app.constants';
 
 @Component({
   standalone: false,
@@ -16,7 +16,6 @@ export class TransactionFormComponent implements OnInit {
   @Output() onCancel = new EventEmitter<void>();
 
   form!: FormGroup;
-  categorias = CATEGORIAS;
   tipos = TIPOS_TRANSACCION;
   fotoActual: string = '';
 
@@ -28,7 +27,7 @@ export class TransactionFormComponent implements OnInit {
   ngOnInit() {
     this.form = this.fb.group({
       tipo:        [this.transaccion?.tipo || 'gasto', Validators.required],
-      categoria:   [this.transaccion?.categoria || '', Validators.required],
+      categoria:   [this.transaccion?.categoria || '', [Validators.required, Validators.maxLength(40)]],
       fecha:       [this.transaccion?.fecha ? new Date(this.transaccion.fecha).toISOString() : new Date().toISOString(), Validators.required],
       monto:       [this.transaccion?.monto || null, [Validators.required, Validators.min(0.01)]],
       descripcion: [this.transaccion?.descripcion || '']
@@ -41,7 +40,13 @@ export class TransactionFormComponent implements OnInit {
 
   async guardar() {
     if (this.form.invalid) { this.form.markAllAsTouched(); return; }
-    const datos = { ...this.form.value, comprobante: this.fotoActual };
+
+    const datos = {
+      ...this.form.value,
+      categoria: this.form.value.categoria.trim(),
+      comprobante: this.fotoActual
+    };
+
     await this.modalCtrl.dismiss(datos);
   }
 

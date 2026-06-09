@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ToastController, LoadingController } from '@ionic/angular';
+import { ToastController, LoadingController, RefresherCustomEvent } from '@ionic/angular';
 import { AuthService } from '../core/services/auth.service';
 import { FirestoreService } from '../core/services/firestore.service';
 import { StorageService } from '../core/services/storage.service';
@@ -18,6 +18,8 @@ const SESSION_KEY = 'moneywise_session';
 export class UsuarioPage implements OnInit {
   usuario: User | null = null;
   form!: FormGroup;
+  mostrarPasswordActual = false;
+  mostrarPasswordNueva = false;
 
   constructor(
     private fb: FormBuilder,
@@ -39,12 +41,29 @@ export class UsuarioPage implements OnInit {
     this.buildForm();
   }
 
+  async refrescar(event?: RefresherCustomEvent) {
+    try {
+      this.usuario = this.authService.currentUser;
+      this.buildForm();
+    } finally {
+      event?.target.complete();
+    }
+  }
+
   buildForm() {
     this.form = this.fb.group({
       nombre:         [this.usuario?.nombre || '', Validators.required],
       passwordActual: [''],
       passwordNueva:  ['', Validators.minLength(6)]
     });
+  }
+
+  togglePasswordActualVisibility() {
+    this.mostrarPasswordActual = !this.mostrarPasswordActual;
+  }
+
+  togglePasswordNuevaVisibility() {
+    this.mostrarPasswordNueva = !this.mostrarPasswordNueva;
   }
 
   toggleTema() {
@@ -99,7 +118,6 @@ export class UsuarioPage implements OnInit {
 
     const { nombre } = this.form.value;
 
-    // Actualiza en Firestore
     const usuarioActualizado: User = {
       ...this.usuario!,
       nombre: nombre.trim(),
@@ -110,7 +128,6 @@ export class UsuarioPage implements OnInit {
 
     await this.firestoreService.set('users', usuarioActualizado.id, usuarioActualizado);
 
-    // Actualiza la sesión local
     await this.storageService.set(SESSION_KEY, usuarioActualizado);
     (this.authService as any).currentUserSubject.next(usuarioActualizado);
     this.usuario = usuarioActualizado;
@@ -127,5 +144,7 @@ export class UsuarioPage implements OnInit {
 
     this.form.get('passwordActual')?.reset();
     this.form.get('passwordNueva')?.reset();
+    this.mostrarPasswordActual = false;
+    this.mostrarPasswordNueva = false;
   }
 }

@@ -178,3 +178,15 @@
   .auth-hero-panel { min-height: 620px; }
   .auth-form-panel { padding: 32px 28px 24px; }
 }
+
+
+.password-toggle {
+  --color: var(--mw-text-muted);
+  --padding-start: 8px;
+  --padding-end: 4px;
+  margin-inline-start: 4px;
+
+  ion-icon {
+    font-size: 20px;
+  }
+}

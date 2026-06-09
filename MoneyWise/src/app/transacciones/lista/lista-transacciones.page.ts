@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, ModalController, ToastController } from '@ionic/angular';
+import { AlertController, ModalController, ToastController, RefresherCustomEvent } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { TransaccionService } from '../../core/services/transaccion.service';
 import { Transaccion } from '../../core/models/transaccion.model';
@@ -15,6 +15,7 @@ import { TransactionFormComponent } from '../../shared/components/transaction-fo
 export class ListaTransaccionesPage implements OnInit, OnDestroy {
   transacciones: Transaccion[] = [];
   transaccionesFiltradas: Transaccion[] = [];
+  categoriasDisponibles: string[] = [];
   tipoFiltro: string = 'todos';
   categoriaFiltro: string = 'todas';
   textoBusqueda: string = '';
@@ -33,6 +34,7 @@ export class ListaTransaccionesPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.sub = this.transaccionService.transacciones$.subscribe(t => {
       this.transacciones = t;
+      this.actualizarCategoriasDisponibles();
       this.aplicarFiltrosYOrden();
     });
   }
@@ -40,7 +42,30 @@ export class ListaTransaccionesPage implements OnInit, OnDestroy {
   ngOnDestroy() { this.sub?.unsubscribe(); }
 
   ionViewWillEnter() {
+    this.actualizarCategoriasDisponibles();
     this.aplicarFiltrosYOrden();
+  }
+
+  async refrescar(event?: RefresherCustomEvent) {
+    try {
+      await this.transaccionService.refrescar();
+      this.actualizarCategoriasDisponibles();
+      this.aplicarFiltrosYOrden();
+    } finally {
+      event?.target.complete();
+    }
+  }
+
+  actualizarCategoriasDisponibles() {
+    this.categoriasDisponibles = Array.from(new Set(
+      this.transacciones
+        .map(t => (t.categoria || '').trim())
+        .filter(Boolean)
+    )).sort((a, b) => a.localeCompare(b, 'es'));
+
+    if (this.categoriaFiltro !== 'todas' && !this.categoriasDisponibles.includes(this.categoriaFiltro)) {
+      this.categoriaFiltro = 'todas';
+    }
   }
 
   aplicarFiltrosYOrden() {
@@ -67,7 +92,7 @@ export class ListaTransaccionesPage implements OnInit, OnDestroy {
       } else if (this.criterioOrden === 'monto') {
         diff = a.monto - b.monto;
       } else if (this.criterioOrden === 'categoria') {
-        diff = a.categoria.localeCompare(b.categoria);
+        diff = a.categoria.localeCompare(b.categoria, 'es');
       }
       return this.ordenAscendente ? diff : -diff;
     });

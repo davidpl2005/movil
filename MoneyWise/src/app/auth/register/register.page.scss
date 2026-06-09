@@ -110,3 +110,15 @@
 @media (min-width: 760px) {
   .register-card { padding: 34px 30px 24px; }
 }
+
+
+.password-toggle {
+  --color: var(--mw-text-muted);
+  --padding-start: 8px;
+  --padding-end: 4px;
+  margin-inline-start: 4px;
+
+  ion-icon {
+    font-size: 20px;
+  }
+}

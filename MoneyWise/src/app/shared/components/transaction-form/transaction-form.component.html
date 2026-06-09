@@ -14,7 +14,7 @@
     <section class="form-hero">
       <p class="mw-kicker">Registro</p>
       <h2>{{ transaccion ? 'Actualiza los datos' : 'Añade una transacción' }}</h2>
-      <p>Clasifica el movimiento para que el dashboard calcule tu balance automáticamente.</p>
+      <p>Clasifica el movimiento con una categoría personalizada para que el dashboard agrupe tus gastos a tu manera.</p>
     </section>
 
     <section class="type-card">
@@ -27,12 +27,20 @@
     </section>
 
     <section class="fields-card">
-      <ion-item class="mw-field" lines="none">
+      <ion-item class="mw-field category-free-field" lines="none" [class.ion-invalid]="form.get('categoria')?.invalid && form.get('categoria')?.touched">
         <ion-icon name="pricetag-outline" slot="start" aria-hidden="true"></ion-icon>
-        <ion-label position="floating">Categoría *</ion-label>
-        <ion-select formControlName="categoria" interface="popover">
-          <ion-select-option *ngFor="let cat of categorias" [value]="cat.id">{{ cat.nombre }}</ion-select-option>
-        </ion-select>
+        <ion-label position="floating">Categoría personalizada *</ion-label>
+        <ion-input
+          type="text"
+          formControlName="categoria"
+          placeholder="Ej. Mercado, Freelance, Arriendo"
+          autocomplete="off"
+          autocapitalize="sentences"
+          maxlength="40"
+          [clearInput]="true">
+        </ion-input>
+        <ion-note slot="helper">Escribe libremente la categoría que mejor describa este movimiento.</ion-note>
+        <ion-note slot="error">La categoría es obligatoria</ion-note>
       </ion-item>
 
       <ion-item class="mw-field" lines="none">

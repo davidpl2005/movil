@@ -5,6 +5,10 @@
 </ion-header>
 
 <ion-content class="mw-page profile-content">
+  <ion-refresher slot="fixed" (ionRefresh)="refrescar($event)">
+    <ion-refresher-content pullingIcon="chevron-down-circle-outline" pullingText="Desliza para actualizar" refreshingSpinner="crescent" refreshingText="Actualizando perfil..."></ion-refresher-content>
+  </ion-refresher>
+
   <main class="mw-screen profile-screen">
     <section class="profile-hero mw-glass-card">
       <div class="avatar-circle"><ion-icon name="person-outline"></ion-icon></div>
@@ -33,7 +37,10 @@
       <ion-item class="mw-field" [class.ion-invalid]="form.get('passwordNueva')?.invalid && form.get('passwordNueva')?.touched">
         <ion-icon name="lock-closed-outline" slot="start" aria-hidden="true"></ion-icon>
         <ion-label position="floating">Nueva contraseña (opcional)</ion-label>
-        <ion-input [formControl]="$any(form.get('passwordNueva'))" type="password"></ion-input>
+        <ion-input [formControl]="$any(form.get('passwordNueva'))" [type]="mostrarPasswordNueva ? 'text' : 'password'" autocomplete="new-password"></ion-input>
+        <ion-button slot="end" fill="clear" class="password-toggle" type="button" (click)="togglePasswordNuevaVisibility()" [attr.aria-label]="mostrarPasswordNueva ? 'Ocultar nueva contraseña' : 'Mostrar nueva contraseña'">
+          <ion-icon slot="icon-only" [name]="mostrarPasswordNueva ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+        </ion-button>
         <ion-note slot="error">Mínimo 6 caracteres</ion-note>
       </ion-item>
 
@@ -46,7 +53,10 @@
       <ion-item class="mw-field" [class.ion-invalid]="form.get('passwordActual')?.touched && !form.get('passwordActual')?.value">
         <ion-icon name="key-outline" slot="start" aria-hidden="true"></ion-icon>
         <ion-label position="floating">Contraseña actual *</ion-label>
-        <ion-input [formControl]="$any(form.get('passwordActual'))" type="password"></ion-input>
+        <ion-input [formControl]="$any(form.get('passwordActual'))" [type]="mostrarPasswordActual ? 'text' : 'password'" autocomplete="current-password"></ion-input>
+        <ion-button slot="end" fill="clear" class="password-toggle" type="button" (click)="togglePasswordActualVisibility()" [attr.aria-label]="mostrarPasswordActual ? 'Ocultar contraseña actual' : 'Mostrar contraseña actual'">
+          <ion-icon slot="icon-only" [name]="mostrarPasswordActual ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+        </ion-button>
         <ion-note slot="error">Debes ingresar tu contraseña actual</ion-note>
       </ion-item>
     </section>

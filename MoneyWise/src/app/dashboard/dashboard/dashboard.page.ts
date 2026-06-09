@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { AlertController } from '@ionic/angular';
+import { AlertController, RefresherCustomEvent } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { TransaccionService } from '../../core/services/transaccion.service';
@@ -41,6 +41,15 @@ export class DashboardPage implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.sub?.unsubscribe();
+  }
+
+  async refrescar(event?: RefresherCustomEvent) {
+    try {
+      this.usuario = this.authService.currentUser;
+      await this.transaccionService.refrescar();
+    } finally {
+      event?.target.complete();
+    }
   }
 
   irATransacciones() {

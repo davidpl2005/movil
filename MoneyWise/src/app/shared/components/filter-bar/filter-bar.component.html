@@ -11,7 +11,7 @@
     <ion-icon name="pricetag-outline" slot="start" class="filter-icon"></ion-icon>
     <ion-select [value]="categoriaSeleccionada" (ionChange)="onCategoriaChange.emit($any($event.detail.value) || 'todas')" interface="popover" placeholder="Categoría" aria-label="Filtrar por categoría">
       <ion-select-option value="todas">Todas las categorías</ion-select-option>
-      <ion-select-option *ngFor="let cat of categorias" [value]="cat.id">{{ cat.nombre }}</ion-select-option>
+      <ion-select-option *ngFor="let cat of categorias" [value]="cat">{{ cat }}</ion-select-option>
     </ion-select>
   </ion-item>
 </section>

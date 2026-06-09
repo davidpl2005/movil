@@ -8,6 +8,10 @@
 </ion-header>
 
 <ion-content class="mw-page detail-content">
+  <ion-refresher slot="fixed" (ionRefresh)="refrescar($event)">
+    <ion-refresher-content pullingIcon="chevron-down-circle-outline" pullingText="Desliza para actualizar" refreshingSpinner="crescent" refreshingText="Actualizando detalle..."></ion-refresher-content>
+  </ion-refresher>
+
   <main class="mw-screen detail-screen">
     <app-transaction-detail *ngIf="transaccion" [transaccion]="transaccion" (onEdit)="editar()" (onDelete)="eliminar()" (onVerComprobante)="verComprobante()"></app-transaction-detail>
 

@@ -12,6 +12,7 @@ import { ToastController, LoadingController } from '@ionic/angular';
 })
 export class RegisterPage {
   form: FormGroup;
+  mostrarPassword = false;
 
   constructor(
     private fb: FormBuilder,
@@ -25,6 +26,10 @@ export class RegisterPage {
       username: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
+  }
+
+  togglePasswordVisibility() {
+    this.mostrarPassword = !this.mostrarPassword;
   }
 
   async registrar() {
