@@ -46,10 +46,7 @@
         <ion-item class="mw-field" [class.ion-invalid]="form.get('password')?.invalid && form.get('password')?.touched">
           <ion-icon name="lock-closed-outline" slot="start" aria-hidden="true"></ion-icon>
           <ion-label position="floating">Contraseña</ion-label>
-          <ion-input [type]="mostrarPassword ? 'text' : 'password'" formControlName="password" placeholder="Mínimo 6 caracteres" autocomplete="current-password"></ion-input>
-          <ion-button slot="end" fill="clear" class="password-toggle" type="button" (click)="togglePasswordVisibility()" [attr.aria-label]="mostrarPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'">
-            <ion-icon slot="icon-only" [name]="mostrarPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
-          </ion-button>
+          <ion-input type="password" formControlName="password" placeholder="Mínimo 6 caracteres" autocomplete="current-password"></ion-input>
           <ion-note slot="error">La contraseña debe tener mínimo 6 caracteres</ion-note>
         </ion-item>
 
@@ -58,6 +55,19 @@
           Entrar a mi panel
         </ion-button>
       </form>
+
+      <div class="biometric-login" *ngIf="mostrarBiometria">
+        <div class="biometric-divider">
+          <span></span>
+          <small>o entra rápido</small>
+          <span></span>
+        </div>
+
+        <ion-button expand="block" fill="outline" class="biometric-btn" (click)="loginConBiometria()" [disabled]="biometricLoading">
+          <ion-icon slot="start" name="finger-print-outline"></ion-icon>
+          Iniciar sesión con biometría
+        </ion-button>
+      </div>
 
       <div class="auth-footer">
         <span>¿Aún no tienes cuenta?</span>

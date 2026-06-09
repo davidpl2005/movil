@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../core/services/auth.service';
 import { ToastController, LoadingController } from '@ionic/angular';
+import { AuthService } from '../../core/services/auth.service';
+import { BiometricAuthService } from '../../core/services/biometric-auth.service';
 
 @Component({
   standalone: false,
@@ -12,11 +13,13 @@ import { ToastController, LoadingController } from '@ionic/angular';
 })
 export class LoginPage {
   form: FormGroup;
-  mostrarPassword = false;
+  mostrarBiometria = false;
+  biometricLoading = false;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private biometricAuthService: BiometricAuthService,
     private router: Router,
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController
@@ -27,8 +30,8 @@ export class LoginPage {
     });
   }
 
-  togglePasswordVisibility() {
-    this.mostrarPassword = !this.mostrarPassword;
+  async ionViewWillEnter() {
+    this.mostrarBiometria = await this.biometricAuthService.shouldShowLoginButton();
   }
 
   async login() {
@@ -47,17 +50,48 @@ export class LoginPage {
     if (ok) {
       this.router.navigate(['/tabs'], { replaceUrl: true });
     } else {
-      const toast = await this.toastCtrl.create({
-        message: 'Usuario o contraseña incorrectos',
-        duration: 2500,
-        color: 'danger',
-        position: 'top'
-      });
-      await toast.present();
+      await this.mostrarToast('Usuario o contraseña incorrectos', 'danger');
+    }
+  }
+
+  async loginConBiometria() {
+    if (this.biometricLoading) return;
+
+    this.biometricLoading = true;
+    const loading = await this.loadingCtrl.create({ message: 'Validando biometría...' });
+    await loading.present();
+
+    try {
+      const credentials = await this.biometricAuthService.getSavedCredentials();
+      const ok = await this.authService.login(credentials.username, credentials.password);
+
+      await loading.dismiss();
+
+      if (ok) {
+        this.router.navigate(['/tabs'], { replaceUrl: true });
+      } else {
+        await this.mostrarToast('Las credenciales guardadas ya no son válidas. Inicia sesión manualmente y vuelve a activar biometría.', 'warning', 3500);
+      }
+    } catch {
+      await loading.dismiss();
+      await this.mostrarToast('No se pudo iniciar con biometría.', 'danger');
+    } finally {
+      this.biometricLoading = false;
+      this.mostrarBiometria = await this.biometricAuthService.shouldShowLoginButton();
     }
   }
 
   irARegistro() {
     this.router.navigate(['/auth/register']);
+  }
+
+  private async mostrarToast(message: string, color: 'success' | 'warning' | 'danger', duration = 2500) {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration,
+      color,
+      position: 'top'
+    });
+    await toast.present();
   }
 }

@@ -1,29 +1,47 @@
 <ion-app>
-  <section class="mw-splash" *ngIf="showSplash" aria-label="Cargando MoneyWise">
-    <div class="splash-orb orb-one"></div>
-    <div class="splash-orb orb-two"></div>
+  <section class="mw-splash premium-splash" *ngIf="showSplash" aria-label="Cargando MoneyWise">
+    <div class="premium-glow glow-one"></div>
+    <div class="premium-glow glow-two"></div>
+    <div class="premium-grid" aria-hidden="true"></div>
 
-    <div class="splash-card">
-      <div class="splash-logo" aria-hidden="true">
-        <svg viewBox="0 0 128 128" role="img">
+    <div class="premium-splash-content">
+      <div class="premium-logo-wrap" aria-hidden="true">
+        <div class="premium-logo-ring"></div>
+        <svg class="premium-logo" viewBox="0 0 128 128" role="img">
           <defs>
-            <linearGradient id="mwIconGradient" x1="18" x2="110" y1="12" y2="116" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stop-color="#34d399" />
-              <stop offset="0.55" stop-color="#0f766e" />
-              <stop offset="1" stop-color="#0f172a" />
+            <linearGradient id="mwPremiumBg" x1="14" y1="6" x2="114" y2="122" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stop-color="#052e2b" />
+              <stop offset="0.56" stop-color="#0f766e" />
+              <stop offset="1" stop-color="#03111d" />
             </linearGradient>
+            <filter id="mwPremiumShadow" x="0" y="0" width="128" height="128">
+              <feDropShadow dx="0" dy="6" stdDeviation="7" flood-color="#052e2b" flood-opacity=".35" />
+            </filter>
           </defs>
-          <rect x="10" y="10" width="108" height="108" rx="30" fill="url(#mwIconGradient)" />
-          <path d="M35 45h44c9 0 16 7 16 16v25c0 7-6 13-13 13H35c-8 0-15-7-15-15V60c0-8 7-15 15-15Z" fill="rgba(255,255,255,.95)" />
-          <path d="M35 39h43c5 0 9 4 9 9H34c-4 0-7 3-7 7v1c-2-2-3-4-3-7 0-6 5-10 11-10Z" fill="rgba(255,255,255,.72)" />
-          <circle cx="82" cy="72" r="8" fill="#0f766e" />
-          <path d="M42 83c9-20 22-30 42-36" fill="none" stroke="#0f766e" stroke-width="8" stroke-linecap="round" />
-          <path d="M71 48h15v15" fill="none" stroke="#0f766e" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
+          <rect x="8" y="8" width="112" height="112" rx="28" fill="url(#mwPremiumBg)" />
+          <circle cx="29" cy="23" r="31" fill="#59e8b8" opacity=".18" />
+          <circle cx="104" cy="28" r="36" fill="#10b981" opacity=".12" />
+          <g filter="url(#mwPremiumShadow)">
+            <path d="M30 42h48c5.5 0 10 4.5 10 10v34c0 7.7-6.3 14-14 14H32c-8.8 0-16-7.2-16-16V56c0-7.7 6.3-14 14-14Z" fill="#fbfff8" />
+            <path d="M30 36h39c5 0 9 4 9 9H30c-5.5 0-10 4.5-10 10v1c-2.5-2.1-4-5.1-4-8 0-6.6 5.4-12 14-12Z" fill="#ecfff6" />
+            <path class="premium-mark" d="M34 79L47 59L60 76L76 54L91 68" fill="none" stroke="#052e2b" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M89 55l12 18-20 1 8-19Z" fill="#052e2b" />
+          </g>
+          <circle class="premium-coin" cx="92" cy="37" r="17" fill="#f5c558" />
+          <circle cx="92" cy="37" r="12" fill="#ffe38f" />
+          <path d="M88 42V31l4.2 7.2L96.5 31v11" stroke="#052e2b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </div>
-      <p class="splash-kicker">MoneyWise</p>
-      <h1>Organizando tus finanzas</h1>
-      <div class="splash-progress"><span></span></div>
+
+      <p class="premium-kicker">Finanzas personales</p>
+      <h1>MoneyWise</h1>
+      <p class="premium-subtitle">Control elegante para tus ingresos, gastos y metas.</p>
+
+      <div class="premium-loader" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </div>
   </section>
 

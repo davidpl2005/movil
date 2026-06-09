@@ -12,6 +12,6 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     window.setTimeout(() => {
       this.showSplash = false;
-    }, 2300);
+    }, 2450);
   }
 }

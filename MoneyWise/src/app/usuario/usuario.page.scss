@@ -122,14 +122,15 @@
 
 .save-btn { margin-top: 2px; }
 
+.biometric-toggle-card {
+  position: relative;
 
-.password-toggle {
-  --color: var(--mw-text-muted);
-  --padding-start: 8px;
-  --padding-end: 4px;
-  margin-inline-start: 4px;
-
-  ion-icon {
-    font-size: 20px;
+  &.disabled {
+    opacity: 0.66;
   }
+}
+
+.biometric-icon {
+  color: var(--mw-success) !important;
+  background: rgba(var(--mw-success-rgb), 0.12) !important;
 }

@@ -179,14 +179,36 @@
   .auth-form-panel { padding: 32px 28px 24px; }
 }
 
+.biometric-login {
+  margin-top: 14px;
+}
 
-.password-toggle {
-  --color: var(--mw-text-muted);
-  --padding-start: 8px;
-  --padding-end: 4px;
-  margin-inline-start: 4px;
+.biometric-divider {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0 12px;
+  color: var(--mw-text-muted);
 
-  ion-icon {
-    font-size: 20px;
+  span {
+    height: 1px;
+    background: var(--mw-border);
   }
+
+  small {
+    font-weight: 850;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    font-size: 0.68rem;
+  }
+}
+
+.biometric-btn {
+  --border-radius: 22px;
+  --border-color: rgba(var(--mw-primary-rgb), 0.32);
+  --color: var(--mw-primary);
+  height: 52px;
+  font-weight: 950;
+  letter-spacing: -0.02em;
 }

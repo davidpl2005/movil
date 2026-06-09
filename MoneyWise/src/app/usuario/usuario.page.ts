@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ToastController, LoadingController, RefresherCustomEvent } from '@ionic/angular';
+import { ToastController, LoadingController } from '@ionic/angular';
 import { AuthService } from '../core/services/auth.service';
+import { BiometricAuthService } from '../core/services/biometric-auth.service';
 import { FirestoreService } from '../core/services/firestore.service';
 import { StorageService } from '../core/services/storage.service';
 import { ThemeService } from '../core/services/theme.service';
@@ -18,12 +19,14 @@ const SESSION_KEY = 'moneywise_session';
 export class UsuarioPage implements OnInit {
   usuario: User | null = null;
   form!: FormGroup;
-  mostrarPasswordActual = false;
-  mostrarPasswordNueva = false;
+  biometriaActiva = false;
+  biometriaDisponible = false;
+  biometricLoading = false;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private biometricAuthService: BiometricAuthService,
     private firestoreService: FirestoreService,
     private storageService: StorageService,
     public themeService: ThemeService,
@@ -31,23 +34,16 @@ export class UsuarioPage implements OnInit {
     private loadingCtrl: LoadingController
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.usuario = this.authService.currentUser;
     this.buildForm();
+    await this.cargarEstadoBiometria();
   }
 
-  ionViewWillEnter() {
+  async ionViewWillEnter() {
     this.usuario = this.authService.currentUser;
     this.buildForm();
-  }
-
-  async refrescar(event?: RefresherCustomEvent) {
-    try {
-      this.usuario = this.authService.currentUser;
-      this.buildForm();
-    } finally {
-      event?.target.complete();
-    }
+    await this.cargarEstadoBiometria();
   }
 
   buildForm() {
@@ -58,41 +54,47 @@ export class UsuarioPage implements OnInit {
     });
   }
 
-  togglePasswordActualVisibility() {
-    this.mostrarPasswordActual = !this.mostrarPasswordActual;
-  }
-
-  togglePasswordNuevaVisibility() {
-    this.mostrarPasswordNueva = !this.mostrarPasswordNueva;
-  }
-
   toggleTema() {
     this.themeService.toggle();
+  }
+
+  async toggleBiometria(event: CustomEvent) {
+    const activar = !!event.detail.checked;
+
+    if (this.biometricLoading) return;
+    this.biometricLoading = true;
+
+    const loading = await this.loadingCtrl.create({
+      message: activar ? 'Activando biometría...' : 'Desactivando biometría...'
+    });
+    await loading.present();
+
+    const result = activar
+      ? await this.biometricAuthService.enableForUser(this.usuario)
+      : await this.biometricAuthService.disable();
+
+    await loading.dismiss();
+    this.biometricLoading = false;
+    await this.cargarEstadoBiometria();
+
+    if (!result.ok) {
+      this.biometriaActiva = false;
+    }
+
+    await this.mostrarToast(result.message, result.ok ? 'success' : 'warning', result.ok ? 2200 : 3500);
   }
 
   async guardar() {
     const passwordActual = this.form.get('passwordActual')?.value;
 
     if (!passwordActual) {
-      const toast = await this.toastCtrl.create({
-        message: 'Debes ingresar tu contraseña actual para guardar los cambios',
-        duration: 3000,
-        color: 'warning',
-        position: 'top'
-      });
-      await toast.present();
+      await this.mostrarToast('Debes ingresar tu contraseña actual para guardar los cambios', 'warning', 3000);
       this.form.get('passwordActual')?.markAsTouched();
       return;
     }
 
     if (passwordActual !== this.usuario?.password) {
-      const toast = await this.toastCtrl.create({
-        message: 'La contraseña actual es incorrecta',
-        duration: 2500,
-        color: 'danger',
-        position: 'top'
-      });
-      await toast.present();
+      await this.mostrarToast('La contraseña actual es incorrecta', 'danger');
       return;
     }
 
@@ -103,13 +105,7 @@ export class UsuarioPage implements OnInit {
 
     const passwordNueva = this.form.get('passwordNueva')?.value;
     if (passwordNueva && passwordNueva.length < 6) {
-      const toast = await this.toastCtrl.create({
-        message: 'La nueva contraseña debe tener mínimo 6 caracteres',
-        duration: 2500,
-        color: 'danger',
-        position: 'top'
-      });
-      await toast.present();
+      await this.mostrarToast('La nueva contraseña debe tener mínimo 6 caracteres', 'danger');
       return;
     }
 
@@ -127,24 +123,35 @@ export class UsuarioPage implements OnInit {
     };
 
     await this.firestoreService.set('users', usuarioActualizado.id, usuarioActualizado);
-
     await this.storageService.set(SESSION_KEY, usuarioActualizado);
     (this.authService as any).currentUserSubject.next(usuarioActualizado);
     this.usuario = usuarioActualizado;
 
+    if (this.biometriaActiva) {
+      await this.biometricAuthService.enableForUser(usuarioActualizado);
+    }
+
     await loading.dismiss();
 
-    const toast = await this.toastCtrl.create({
-      message: 'Perfil actualizado correctamente',
-      duration: 2500,
-      color: 'success',
-      position: 'top'
-    });
-    await toast.present();
+    await this.mostrarToast('Perfil actualizado correctamente', 'success');
 
     this.form.get('passwordActual')?.reset();
     this.form.get('passwordNueva')?.reset();
-    this.mostrarPasswordActual = false;
-    this.mostrarPasswordNueva = false;
+    await this.cargarEstadoBiometria();
+  }
+
+  private async cargarEstadoBiometria() {
+    this.biometriaDisponible = await this.biometricAuthService.isAvailable();
+    this.biometriaActiva = await this.biometricAuthService.shouldShowLoginButton();
+  }
+
+  private async mostrarToast(message: string, color: 'success' | 'warning' | 'danger', duration = 2500) {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration,
+      color,
+      position: 'top'
+    });
+    await toast.present();
   }
 }

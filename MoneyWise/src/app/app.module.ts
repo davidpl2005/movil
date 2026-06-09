@@ -12,12 +12,14 @@ import { StorageService } from './core/services/storage.service';
 import { AuthService } from './core/services/auth.service';
 import { TransaccionService } from './core/services/transaccion.service';
 import { ThemeService } from './core/services/theme.service';
+import { BiometricAuthService } from './core/services/biometric-auth.service';
 
 export function initializeApp(
   storageService: StorageService,
   authService: AuthService,
   transaccionService: TransaccionService,
-  themeService: ThemeService
+  themeService: ThemeService,
+  biometricAuthService: BiometricAuthService
 ) {
   return async () => {
     // Primero el storage (local), luego auth (necesita storage),
@@ -26,6 +28,7 @@ export function initializeApp(
     await authService.init();
     await transaccionService.init();
     await themeService.init();
+    await biometricAuthService.init();
   };
 }
 
@@ -43,7 +46,7 @@ export function initializeApp(
     {
       provide: APP_INITIALIZER,
       useFactory: initializeApp,
-      deps: [StorageService, AuthService, TransaccionService, ThemeService],
+      deps: [StorageService, AuthService, TransaccionService, ThemeService, BiometricAuthService],
       multi: true
     }
   ],
