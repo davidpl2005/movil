@@ -212,3 +212,12 @@
   font-weight: 950;
   letter-spacing: -0.02em;
 }
+
+.password-toggle {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  --color: var(--mw-text-muted);
+  margin-inline-end: 2px;
+
+  ion-icon { font-size: 21px; }
+}

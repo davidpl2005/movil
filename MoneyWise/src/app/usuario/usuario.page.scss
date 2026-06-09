@@ -1,5 +1,5 @@
 .profile-content { --background: transparent; }
-.profile-screen { display: grid; gap: 14px; }
+.profile-screen { display: grid; gap: 14px; padding-bottom: 112px; }
 
 .profile-hero {
   display: flex;
@@ -25,16 +25,47 @@
 }
 
 .avatar-circle {
+  position: relative;
   width: 82px;
   height: 82px;
   flex: 0 0 auto;
   display: grid;
   place-items: center;
+  border: 0;
   border-radius: 30px;
   background: var(--mw-gradient-primary);
   box-shadow: var(--mw-glow);
+  overflow: visible;
+  cursor: pointer;
 
   ion-icon { color: #fff; font-size: 40px; }
+
+  img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    border-radius: 30px;
+  }
+}
+
+.avatar-camera {
+  position: absolute;
+  right: -4px;
+  bottom: -4px;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 3px solid rgba(255, 255, 255, 0.92);
+  border-radius: 999px;
+  background: var(--mw-primary);
+  box-shadow: var(--mw-shadow-sm);
+
+  ion-icon {
+    color: #fff;
+    font-size: 15px;
+  }
 }
 
 .info-note,
@@ -79,6 +110,22 @@
   margin-right: 8px;
 }
 
+.field-help {
+  margin: -2px 4px 8px;
+  color: var(--mw-text-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.password-toggle {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  --color: var(--mw-text-muted);
+  margin-inline-end: 2px;
+
+  ion-icon { font-size: 21px; }
+}
+
 .password-strength {
   display: flex;
   align-items: center;
@@ -121,6 +168,17 @@
 }
 
 .save-btn { margin-top: 2px; }
+
+.logout-btn {
+  --border-radius: 22px;
+  --border-color: rgba(var(--mw-danger-rgb), 0.32);
+  --color: var(--mw-danger);
+  --background: rgba(var(--mw-danger-rgb), 0.06);
+  height: 56px;
+  margin: 0 0 8px;
+  font-weight: 900;
+  letter-spacing: 0.01em;
+}
 
 .biometric-toggle-card {
   position: relative;

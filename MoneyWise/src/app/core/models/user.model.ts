@@ -4,4 +4,5 @@ export interface User {
   password: string;
   nombre: string;
   fechaRegistro: Date;
+fotoPerfil?: string | null;
 }

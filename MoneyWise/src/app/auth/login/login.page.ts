@@ -15,6 +15,7 @@ export class LoginPage {
   form: FormGroup;
   mostrarBiometria = false;
   biometricLoading = false;
+  mostrarPassword = false;
 
   constructor(
     private fb: FormBuilder,
@@ -32,6 +33,10 @@ export class LoginPage {
 
   async ionViewWillEnter() {
     this.mostrarBiometria = await this.biometricAuthService.shouldShowLoginButton();
+  }
+
+  togglePasswordVisibility() {
+    this.mostrarPassword = !this.mostrarPassword;
   }
 
   async login() {

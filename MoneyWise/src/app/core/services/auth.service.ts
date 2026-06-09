@@ -88,9 +88,22 @@ export class AuthService {
     return true;
   }
 
+  async usernameDisponible(username: string, userIdActual?: string): Promise<boolean> {
+    if (!username) return false;
+
+    const usernameNormalizado = username.trim().toLowerCase();
+    const usuarios = await this.firestoreService.query('users', 'username', usernameNormalizado);
+    return usuarios.every(usuario => usuario.id === userIdActual);
+  }
+
+  async actualizarUsuarioSesion(usuario: User): Promise<void> {
+    await this.storageService.set(SESSION_KEY, usuario);
+    this.currentUserSubject.next(usuario);
+  }
+
   async logout(): Promise<void> {
     await this.storageService.remove(SESSION_KEY);
     this.currentUserSubject.next(null);
-    this.router.navigate(['/auth/login']);
+    this.router.navigate(['/auth/login'], { replaceUrl: true });
   }
 }
