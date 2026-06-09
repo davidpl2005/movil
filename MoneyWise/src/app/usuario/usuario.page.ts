@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActionSheetController, LoadingController, ToastController } from '@ionic/angular';
+import {
+  ActionSheetController,
+  AlertController,
+  LoadingController,
+  ToastController
+} from '@ionic/angular';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { AuthService } from '../core/services/auth.service';
 import { BiometricAuthService } from '../core/services/biometric-auth.service';
@@ -31,7 +36,8 @@ export class UsuarioPage implements OnInit {
     public themeService: ThemeService,
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController,
-    private actionSheetCtrl: ActionSheetController
+    private actionSheetCtrl: ActionSheetController,
+    private alertCtrl: AlertController
   ) {}
 
   async ngOnInit() {
@@ -141,9 +147,13 @@ export class UsuarioPage implements OnInit {
       fotoPerfil: fotoPerfil ?? null
     };
 
-    await this.firestoreService.set('users', usuarioActualizado.id, this.limpiarUsuarioParaFirestore(usuarioActualizado));
-    await this.authService.actualizarUsuarioSesion(usuarioActualizado);
+    await this.firestoreService.set(
+      'users',
+      usuarioActualizado.id,
+      this.limpiarUsuarioParaFirestore(usuarioActualizado)
+    );
 
+    await this.authService.actualizarUsuarioSesion(usuarioActualizado);
     this.usuario = usuarioActualizado;
   }
 
@@ -180,16 +190,8 @@ export class UsuarioPage implements OnInit {
   }
 
   async guardar() {
-    const passwordActual = this.form.get('passwordActual')?.value;
-
-    if (!passwordActual) {
-      await this.mostrarToast('Debes ingresar tu contraseña actual para guardar los cambios', 'warning', 3000);
-      this.form.get('passwordActual')?.markAsTouched();
-      return;
-    }
-
-    if (passwordActual !== this.usuario?.password) {
-      await this.mostrarToast('La contraseña actual es incorrecta', 'danger');
+    if (!this.usuario) {
+      await this.mostrarToast('No se encontró una sesión activa', 'danger');
       return;
     }
 
@@ -199,10 +201,44 @@ export class UsuarioPage implements OnInit {
       return;
     }
 
+    const nombre = this.form.get('nombre')?.value?.trim();
+    const username = this.form.get('username')?.value?.trim();
+    const passwordActual = this.form.get('passwordActual')?.value;
     const passwordNueva = this.form.get('passwordNueva')?.value;
+
+    const usernameNormalizado = username.toLowerCase();
+    const usernameActual = this.usuario.username?.trim().toLowerCase();
+
+    const cambioUsuario = usernameNormalizado !== usernameActual;
+    const cambioPassword = !!passwordNueva;
+    const requierePasswordActual = cambioUsuario || cambioPassword;
 
     if (passwordNueva && passwordNueva.length < 6) {
       await this.mostrarToast('La nueva contraseña debe tener mínimo 6 caracteres', 'danger');
+      return;
+    }
+
+    /*
+      Ahora la contraseña actual solo se pide para cambios sensibles:
+      - cambiar usuario de acceso
+      - cambiar contraseña
+
+      Para cambios normales como nombre, foto, tema o biometría,
+      ya no se exige contraseña cada vez.
+    */
+    if (requierePasswordActual && !passwordActual) {
+      await this.mostrarToast(
+        'Ingresa tu contraseña actual solo para cambiar usuario o contraseña',
+        'warning',
+        3200
+      );
+
+      this.form.get('passwordActual')?.markAsTouched();
+      return;
+    }
+
+    if (requierePasswordActual && passwordActual !== this.usuario.password) {
+      await this.mostrarToast('La contraseña actual es incorrecta', 'danger');
       return;
     }
 
@@ -213,14 +249,10 @@ export class UsuarioPage implements OnInit {
     await loading.present();
 
     try {
-      const { nombre, username } = this.form.value;
-      const usernameNormalizado = username.trim().toLowerCase();
-      const usernameActual = this.usuario?.username?.trim().toLowerCase();
-
-      if (usernameNormalizado !== usernameActual) {
+      if (cambioUsuario) {
         const disponible = await this.authService.usernameDisponible(
           usernameNormalizado,
-          this.usuario?.id
+          this.usuario.id
         );
 
         if (!disponible) {
@@ -231,13 +263,11 @@ export class UsuarioPage implements OnInit {
       }
 
       const usuarioActualizado: User = {
-        ...this.usuario!,
-        nombre: nombre.trim(),
+        ...this.usuario,
+        nombre,
         username: usernameNormalizado,
-        password: passwordNueva && passwordNueva.length >= 6
-          ? passwordNueva
-          : this.usuario!.password,
-        fotoPerfil: this.usuario?.fotoPerfil ?? null
+        password: cambioPassword ? passwordNueva : this.usuario.password,
+        fotoPerfil: this.usuario.fotoPerfil ?? null
       };
 
       await this.firestoreService.set(
@@ -269,7 +299,25 @@ export class UsuarioPage implements OnInit {
   }
 
   async cerrarSesion() {
-    await this.authService.logout();
+    const alert = await this.alertCtrl.create({
+      header: 'Cerrar sesión',
+      message: '¿Estás seguro de que deseas cerrar sesión?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Cerrar sesión',
+          role: 'destructive',
+          handler: async () => {
+            await this.authService.logout();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   private async cargarEstadoBiometria() {
