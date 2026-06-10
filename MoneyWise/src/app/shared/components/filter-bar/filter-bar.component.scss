@@ -42,3 +42,59 @@
   .filter-bar { grid-template-columns: 1fr 1fr; align-items: center; }
   .filter-search { grid-column: 1 / -1; }
 }
+
+
+/* Correccion de contraste del buscador en modo oscuro.
+   Ionic encapsula internamente ion-searchbar; por eso usamos variables
+   y ::part para garantizar color de texto, placeholder e iconos. */
+.filter-search {
+  --background: var(--mw-surface);
+  --border-radius: 18px;
+  --box-shadow: var(--mw-shadow-sm);
+  --color: var(--mw-text);
+  --placeholder-color: var(--mw-text-muted);
+  --icon-color: var(--mw-text-muted);
+  --clear-button-color: var(--mw-text-muted);
+  color: var(--mw-text);
+}
+
+.filter-search::part(container) {
+  background: var(--mw-surface);
+  border: 1px solid var(--mw-border);
+  border-radius: 18px;
+  box-shadow: var(--mw-shadow-sm);
+}
+
+.filter-search::part(input) {
+  color: var(--mw-text) !important;
+  caret-color: var(--mw-primary);
+}
+
+.filter-search::part(input)::placeholder {
+  color: var(--mw-text-muted) !important;
+  opacity: 1;
+}
+
+:host-context(body[color-theme="dark"]) .filter-search,
+:host-context(body[color-theme="dark"]) ion-searchbar.filter-search {
+  --background: rgba(7, 17, 31, 0.96);
+  --color: #f8fafc;
+  --placeholder-color: rgba(248, 250, 252, 0.72);
+  --icon-color: rgba(248, 250, 252, 0.82);
+  --clear-button-color: rgba(248, 250, 252, 0.82);
+  color: #f8fafc;
+}
+
+:host-context(body[color-theme="dark"]) .filter-search::part(container) {
+  background: rgba(7, 17, 31, 0.96);
+  border-color: rgba(148, 163, 184, 0.22);
+}
+
+:host-context(body[color-theme="dark"]) .filter-search::part(input) {
+  color: #f8fafc !important;
+  caret-color: #5eead4;
+}
+
+:host-context(body[color-theme="dark"]) .filter-search::part(input)::placeholder {
+  color: rgba(248, 250, 252, 0.72) !important;
+}

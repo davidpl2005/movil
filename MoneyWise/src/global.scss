@@ -370,3 +370,111 @@ ion-datetime {
   outline: 3px solid rgba(var(--mw-primary-rgb), 0.75);
   outline-offset: 3px;
 }
+
+
+/* ============================================================
+   Correccion modo oscuro: Action Sheet de foto de perfil
+   ============================================================
+   ion-action-sheet se renderiza fuera del componente usuario,
+   por eso estos estilos deben vivir en global.scss. */
+
+.moneywise-photo-sheet {
+  --background: var(--mw-elevated);
+  --color: var(--mw-text);
+  --button-color: var(--mw-text);
+  --button-color-selected: var(--mw-primary);
+  --backdrop-opacity: 0.55;
+}
+
+.moneywise-photo-sheet .action-sheet-wrapper {
+  color: var(--mw-text) !important;
+}
+
+.moneywise-photo-sheet .action-sheet-group {
+  background: var(--mw-elevated) !important;
+  border-top: 1px solid var(--mw-border);
+  border-radius: 28px 28px 0 0;
+  color: var(--mw-text) !important;
+}
+
+.moneywise-photo-sheet .action-sheet-title {
+  color: var(--mw-text) !important;
+  font-weight: 850;
+  letter-spacing: -0.02em;
+}
+
+.moneywise-photo-sheet .action-sheet-button,
+.moneywise-photo-sheet .action-sheet-button .action-sheet-button-inner,
+.moneywise-photo-sheet .action-sheet-button ion-icon {
+  color: var(--mw-text) !important;
+  opacity: 1 !important;
+}
+
+.moneywise-photo-sheet .action-sheet-button[role='destructive'],
+.moneywise-photo-sheet .action-sheet-button[role='destructive'] .action-sheet-button-inner,
+.moneywise-photo-sheet .action-sheet-button[role='destructive'] ion-icon {
+  color: var(--mw-primary) !important;
+}
+
+.moneywise-photo-sheet .action-sheet-button[role='cancel'],
+.moneywise-photo-sheet .action-sheet-button[role='cancel'] .action-sheet-button-inner,
+.moneywise-photo-sheet .action-sheet-button[role='cancel'] ion-icon {
+  color: var(--mw-text-muted) !important;
+}
+
+body[color-theme='dark'] .moneywise-photo-sheet,
+body[color-theme='dark'] .moneywise-photo-sheet .action-sheet-wrapper,
+body[color-theme='dark'] .moneywise-photo-sheet .action-sheet-group {
+  --background: #07111f;
+  --color: #f8fafc;
+  --button-color: #f8fafc;
+  background: #07111f !important;
+  color: #f8fafc !important;
+}
+
+body[color-theme='dark'] .moneywise-photo-sheet .action-sheet-title {
+  color: #f8fafc !important;
+}
+
+body[color-theme='dark'] .moneywise-photo-sheet .action-sheet-button,
+body[color-theme='dark'] .moneywise-photo-sheet .action-sheet-button .action-sheet-button-inner,
+body[color-theme='dark'] .moneywise-photo-sheet .action-sheet-button ion-icon {
+  color: #f8fafc !important;
+  opacity: 1 !important;
+}
+
+body[color-theme='dark'] .moneywise-photo-sheet .action-sheet-button[role='destructive'],
+body[color-theme='dark'] .moneywise-photo-sheet .action-sheet-button[role='destructive'] .action-sheet-button-inner,
+body[color-theme='dark'] .moneywise-photo-sheet .action-sheet-button[role='destructive'] ion-icon {
+  color: #5eead4 !important;
+}
+
+body[color-theme='dark'] .moneywise-photo-sheet .action-sheet-button[role='cancel'],
+body[color-theme='dark'] .moneywise-photo-sheet .action-sheet-button[role='cancel'] .action-sheet-button-inner,
+body[color-theme='dark'] .moneywise-photo-sheet .action-sheet-button[role='cancel'] ion-icon {
+  color: rgba(248, 250, 252, 0.82) !important;
+}
+
+body[color-theme='dark'] .action-sheet-backdrop {
+  background: rgba(0, 0, 0, 0.62) !important;
+}
+
+/* Refuerzo global para ion-searchbar en modo oscuro. */
+body[color-theme='dark'] ion-searchbar {
+  --background: rgba(7, 17, 31, 0.96);
+  --color: #f8fafc;
+  --placeholder-color: rgba(248, 250, 252, 0.72);
+  --icon-color: rgba(248, 250, 252, 0.82);
+  --clear-button-color: rgba(248, 250, 252, 0.82);
+  color: #f8fafc;
+}
+
+body[color-theme='dark'] ion-searchbar::part(input) {
+  color: #f8fafc !important;
+  caret-color: #5eead4;
+}
+
+body[color-theme='dark'] ion-searchbar::part(input)::placeholder {
+  color: rgba(248, 250, 252, 0.72) !important;
+  opacity: 1;
+}

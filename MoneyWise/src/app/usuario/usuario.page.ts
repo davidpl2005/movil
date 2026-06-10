@@ -28,6 +28,23 @@ export class UsuarioPage implements OnInit {
   mostrarPasswordNueva = false;
   mostrarPasswordActual = false;
 
+  fotoTemporalDataUrl: string | null = null;
+  cropModalAbierto = false;
+  cropZoom = 1;
+  cropOffsetX = 0;
+  cropOffsetY = 0;
+  cropImageWidth = 0;
+  cropImageHeight = 0;
+
+  arrastrandoFoto = false;
+
+  private readonly cropViewportSize = 280;
+  private readonly cropOutputSize = 512;
+  private dragStartX = 0;
+  private dragStartY = 0;
+  private initialOffsetX = 0;
+  private initialOffsetY = 0;
+
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -79,6 +96,7 @@ export class UsuarioPage implements OnInit {
   async cambiarFotoPerfil() {
     const actionSheet = await this.actionSheetCtrl.create({
       header: 'Foto de perfil',
+      cssClass: 'moneywise-photo-sheet',
       buttons: [
         {
           text: 'Tomar foto',
@@ -112,12 +130,10 @@ export class UsuarioPage implements OnInit {
 
     try {
       const image = await Camera.getPhoto({
-        quality: 72,
-        allowEditing: true,
+        quality: 90,
+        allowEditing: false,
         resultType: CameraResultType.DataUrl,
         source,
-        width: 512,
-        height: 512,
         promptLabelHeader: 'Foto de perfil',
         promptLabelPhoto: 'Elegir de galería',
         promptLabelPicture: 'Tomar foto'
@@ -125,11 +141,183 @@ export class UsuarioPage implements OnInit {
 
       if (!image.dataUrl) return;
 
-      await this.actualizarFotoPerfil(image.dataUrl);
-      await this.mostrarToast('Foto de perfil actualizada', 'success');
+      this.abrirRecorteFoto(image.dataUrl);
     } catch (error) {
       console.warn('Selección de foto cancelada o no disponible', error);
     }
+  }
+
+  abrirRecorteFoto(dataUrl: string) {
+    this.fotoTemporalDataUrl = dataUrl;
+    this.cropZoom = 1;
+    this.cropOffsetX = 0;
+    this.cropOffsetY = 0;
+    this.cropImageWidth = 0;
+    this.cropImageHeight = 0;
+    this.arrastrandoFoto = false;
+    this.cropModalAbierto = true;
+  }
+
+  cerrarRecorteFoto() {
+    this.cropModalAbierto = false;
+    this.fotoTemporalDataUrl = null;
+    this.arrastrandoFoto = false;
+  }
+
+  onImagenRecorteCargada(event: Event) {
+    const img = event.target as HTMLImageElement;
+    this.cropImageWidth = img.naturalWidth;
+    this.cropImageHeight = img.naturalHeight;
+    this.ajustarLimitesRecorte();
+  }
+
+  iniciarArrastreFoto(event: PointerEvent) {
+    event.preventDefault();
+
+    this.arrastrandoFoto = true;
+    this.dragStartX = event.clientX;
+    this.dragStartY = event.clientY;
+    this.initialOffsetX = this.cropOffsetX;
+    this.initialOffsetY = this.cropOffsetY;
+
+    const target = event.currentTarget as HTMLElement;
+    target.setPointerCapture?.(event.pointerId);
+  }
+
+  moverArrastreFoto(event: PointerEvent) {
+    if (!this.arrastrandoFoto) return;
+
+    event.preventDefault();
+
+    this.cropOffsetX = this.initialOffsetX + (event.clientX - this.dragStartX);
+    this.cropOffsetY = this.initialOffsetY + (event.clientY - this.dragStartY);
+
+    this.ajustarLimitesRecorte();
+  }
+
+  terminarArrastreFoto(event?: PointerEvent) {
+    this.arrastrandoFoto = false;
+
+    if (event) {
+      const target = event.currentTarget as HTMLElement;
+      target.releasePointerCapture?.(event.pointerId);
+    }
+  }
+
+  onZoomRecorteChange(event: CustomEvent) {
+    this.cropZoom = Number(event.detail.value || 1);
+    this.ajustarLimitesRecorte();
+  }
+
+  async guardarRecorteFoto() {
+    if (!this.fotoTemporalDataUrl || !this.cropImageWidth || !this.cropImageHeight) {
+      await this.mostrarToast('No se pudo preparar la imagen. Intenta nuevamente.', 'warning');
+      return;
+    }
+
+    const loading = await this.loadingCtrl.create({
+      message: 'Recortando foto...'
+    });
+
+    await loading.present();
+
+    try {
+      const imagenRecortada = await this.generarFotoRecortada();
+
+      await this.actualizarFotoPerfil(imagenRecortada);
+      this.cerrarRecorteFoto();
+
+      await loading.dismiss();
+      await this.mostrarToast('Foto de perfil actualizada', 'success');
+    } catch (error) {
+      await loading.dismiss();
+      console.error('Error al recortar foto de perfil', error);
+      await this.mostrarToast('No se pudo recortar la foto. Intenta nuevamente.', 'danger');
+    }
+  }
+
+  private ajustarLimitesRecorte() {
+    if (!this.cropImageWidth || !this.cropImageHeight) return;
+
+    const coverScale = Math.max(
+      this.cropViewportSize / this.cropImageWidth,
+      this.cropViewportSize / this.cropImageHeight
+    );
+
+    const displayWidth = this.cropImageWidth * coverScale * this.cropZoom;
+    const displayHeight = this.cropImageHeight * coverScale * this.cropZoom;
+
+    const maxOffsetX = Math.max(0, (displayWidth - this.cropViewportSize) / 2);
+    const maxOffsetY = Math.max(0, (displayHeight - this.cropViewportSize) / 2);
+
+    this.cropOffsetX = Math.min(maxOffsetX, Math.max(-maxOffsetX, this.cropOffsetX));
+    this.cropOffsetY = Math.min(maxOffsetY, Math.max(-maxOffsetY, this.cropOffsetY));
+  }
+
+  private generarFotoRecortada(): Promise<string> {
+    return new Promise((resolve, reject) => {
+      if (!this.fotoTemporalDataUrl) {
+        reject(new Error('No hay foto temporal para recortar'));
+        return;
+      }
+
+      const image = new Image();
+
+      image.onload = () => {
+        const sourceWidth = image.naturalWidth;
+        const sourceHeight = image.naturalHeight;
+
+        const coverScale = Math.max(
+          this.cropViewportSize / sourceWidth,
+          this.cropViewportSize / sourceHeight
+        );
+
+        const scale = coverScale * this.cropZoom;
+
+        const displayWidth = sourceWidth * scale;
+        const displayHeight = sourceHeight * scale;
+
+        const imageLeft = (this.cropViewportSize - displayWidth) / 2 + this.cropOffsetX;
+        const imageTop = (this.cropViewportSize - displayHeight) / 2 + this.cropOffsetY;
+
+        const cropX = Math.max(0, -imageLeft / scale);
+        const cropY = Math.max(0, -imageTop / scale);
+
+        const cropWidth = Math.min(sourceWidth - cropX, this.cropViewportSize / scale);
+        const cropHeight = Math.min(sourceHeight - cropY, this.cropViewportSize / scale);
+
+        const canvas = document.createElement('canvas');
+        canvas.width = this.cropOutputSize;
+        canvas.height = this.cropOutputSize;
+
+        const context = canvas.getContext('2d');
+
+        if (!context) {
+          reject(new Error('No se pudo crear el lienzo de recorte'));
+          return;
+        }
+
+        context.imageSmoothingEnabled = true;
+        context.imageSmoothingQuality = 'high';
+
+        context.drawImage(
+          image,
+          cropX,
+          cropY,
+          cropWidth,
+          cropHeight,
+          0,
+          0,
+          this.cropOutputSize,
+          this.cropOutputSize
+        );
+
+        resolve(canvas.toDataURL('image/jpeg', 0.88));
+      };
+
+      image.onerror = () => reject(new Error('No se pudo cargar la imagen para recorte'));
+      image.src = this.fotoTemporalDataUrl;
+    });
   }
 
   async quitarFotoPerfil() {
@@ -161,6 +349,7 @@ export class UsuarioPage implements OnInit {
     const activar = !!event.detail.checked;
 
     if (this.biometricLoading) return;
+
     this.biometricLoading = true;
 
     const loading = await this.loadingCtrl.create({
@@ -174,6 +363,7 @@ export class UsuarioPage implements OnInit {
       : await this.biometricAuthService.disable();
 
     await loading.dismiss();
+
     this.biometricLoading = false;
 
     await this.cargarEstadoBiometria();
@@ -218,14 +408,6 @@ export class UsuarioPage implements OnInit {
       return;
     }
 
-    /*
-      Ahora la contraseña actual solo se pide para cambios sensibles:
-      - cambiar usuario de acceso
-      - cambiar contraseña
-
-      Para cambios normales como nombre, foto, tema o biometría,
-      ya no se exige contraseña cada vez.
-    */
     if (requierePasswordActual && !passwordActual) {
       await this.mostrarToast(
         'Ingresa tu contraseña actual solo para cambiar usuario o contraseña',

@@ -7,13 +7,25 @@
 <ion-content class="mw-page profile-content">
   <main class="mw-screen profile-screen">
     <section class="profile-hero mw-glass-card">
-      <button type="button" class="avatar-circle" (click)="cambiarFotoPerfil()" aria-label="Cambiar foto de perfil">
-        <img *ngIf="usuario?.fotoPerfil; else defaultAvatar" [src]="usuario?.fotoPerfil" alt="Foto de perfil" />
+      <button
+        type="button"
+        class="avatar-circle"
+        (click)="cambiarFotoPerfil()"
+        aria-label="Cambiar foto de perfil">
+        <img
+          *ngIf="usuario?.fotoPerfil; else defaultAvatar"
+          [src]="usuario?.fotoPerfil"
+          alt="Foto de perfil" />
+
         <ng-template #defaultAvatar>
           <ion-icon name="person-outline"></ion-icon>
         </ng-template>
-        <span class="avatar-camera"><ion-icon name="camera-outline"></ion-icon></span>
+
+        <span class="avatar-camera">
+          <ion-icon name="camera-outline"></ion-icon>
+        </span>
       </button>
+
       <div>
         <p class="mw-kicker">Mi cuenta</p>
         <h1>{{ usuario?.nombre }}</h1>
@@ -28,45 +40,99 @@
 
     <section class="form-card">
       <p class="mw-section-title">Actualizar datos</p>
-      <ion-item class="mw-field" [class.ion-invalid]="form.get('nombre')?.invalid && form.get('nombre')?.touched">
+
+      <ion-item
+        class="mw-field"
+        [class.ion-invalid]="form.get('nombre')?.invalid && form.get('nombre')?.touched">
         <ion-icon name="id-card-outline" slot="start" aria-hidden="true"></ion-icon>
         <ion-label position="floating">Nombre completo</ion-label>
-        <ion-input [formControl]="$any(form.get('nombre'))" type="text" autocomplete="name"></ion-input>
+        <ion-input
+          [formControl]="$any(form.get('nombre'))"
+          type="text"
+          autocomplete="name">
+        </ion-input>
         <ion-note slot="error">El nombre es requerido</ion-note>
       </ion-item>
 
-      <ion-item class="mw-field" [class.ion-invalid]="form.get('username')?.invalid && form.get('username')?.touched">
+      <ion-item
+        class="mw-field"
+        [class.ion-invalid]="form.get('username')?.invalid && form.get('username')?.touched">
         <ion-icon name="at-outline" slot="start" aria-hidden="true"></ion-icon>
         <ion-label position="floating">Usuario de acceso</ion-label>
-        <ion-input [formControl]="$any(form.get('username'))" type="text" autocomplete="username"></ion-input>
-        <ion-note slot="error">Usa 3 a 24 caracteres: letras, números, punto, guion o guion bajo.</ion-note>
+        <ion-input
+          [formControl]="$any(form.get('username'))"
+          type="text"
+          autocomplete="username">
+        </ion-input>
+        <ion-note slot="error">
+          Usa 3 a 24 caracteres: letras, números, punto, guion o guion bajo.
+        </ion-note>
       </ion-item>
 
       <p class="field-help">Este usuario es el que usarás para iniciar sesión.</p>
 
       <p class="mw-section-title">Cambiar contraseña</p>
-      <ion-item class="mw-field" [class.ion-invalid]="form.get('passwordNueva')?.invalid && form.get('passwordNueva')?.touched">
+
+      <ion-item
+        class="mw-field"
+        [class.ion-invalid]="form.get('passwordNueva')?.invalid && form.get('passwordNueva')?.touched">
         <ion-icon name="lock-closed-outline" slot="start" aria-hidden="true"></ion-icon>
         <ion-label position="floating">Nueva contraseña (opcional)</ion-label>
-        <ion-input [formControl]="$any(form.get('passwordNueva'))" [type]="mostrarPasswordNueva ? 'text' : 'password'" autocomplete="new-password"></ion-input>
-        <ion-button slot="end" fill="clear" class="password-toggle" type="button" (click)="togglePasswordNuevaVisibility()" [attr.aria-label]="mostrarPasswordNueva ? 'Ocultar contraseña nueva' : 'Mostrar contraseña nueva'">
-          <ion-icon slot="icon-only" [name]="mostrarPasswordNueva ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+        <ion-input
+          [formControl]="$any(form.get('passwordNueva'))"
+          [type]="mostrarPasswordNueva ? 'text' : 'password'"
+          autocomplete="new-password">
+        </ion-input>
+        <ion-button
+          slot="end"
+          fill="clear"
+          class="password-toggle"
+          type="button"
+          (click)="togglePasswordNuevaVisibility()"
+          [attr.aria-label]="mostrarPasswordNueva ? 'Ocultar contraseña nueva' : 'Mostrar contraseña nueva'">
+          <ion-icon
+            slot="icon-only"
+            [name]="mostrarPasswordNueva ? 'eye-off-outline' : 'eye-outline'">
+          </ion-icon>
         </ion-button>
         <ion-note slot="error">Mínimo 6 caracteres</ion-note>
       </ion-item>
 
-      <div class="password-strength" *ngIf="form.get('passwordNueva')?.touched && form.get('passwordNueva')?.value">
-        <ion-icon [name]="form.get('passwordNueva')?.value?.length >= 6 ? 'checkmark-circle' : 'ellipse-outline'" [class.ok]="form.get('passwordNueva')?.value?.length >= 6"></ion-icon>
-        <span [class.ok]="form.get('passwordNueva')?.value?.length >= 6">{{ form.get('passwordNueva')?.value?.length || 0 }}/6 caracteres mínimos</span>
+      <div
+        class="password-strength"
+        *ngIf="form.get('passwordNueva')?.touched && form.get('passwordNueva')?.value">
+        <ion-icon
+          [name]="form.get('passwordNueva')?.value?.length >= 6 ? 'checkmark-circle' : 'ellipse-outline'"
+          [class.ok]="form.get('passwordNueva')?.value?.length >= 6">
+        </ion-icon>
+        <span [class.ok]="form.get('passwordNueva')?.value?.length >= 6">
+          {{ form.get('passwordNueva')?.value?.length || 0 }}/6 caracteres mínimos
+        </span>
       </div>
 
       <p class="mw-section-title confirm-label">Confirmación requerida</p>
-      <ion-item class="mw-field" [class.ion-invalid]="form.get('passwordActual')?.touched && !form.get('passwordActual')?.value">
+
+      <ion-item
+        class="mw-field"
+        [class.ion-invalid]="form.get('passwordActual')?.touched && !form.get('passwordActual')?.value">
         <ion-icon name="key-outline" slot="start" aria-hidden="true"></ion-icon>
         <ion-label position="floating">Contraseña actual *</ion-label>
-        <ion-input [formControl]="$any(form.get('passwordActual'))" [type]="mostrarPasswordActual ? 'text' : 'password'" autocomplete="current-password"></ion-input>
-        <ion-button slot="end" fill="clear" class="password-toggle" type="button" (click)="togglePasswordActualVisibility()" [attr.aria-label]="mostrarPasswordActual ? 'Ocultar contraseña actual' : 'Mostrar contraseña actual'">
-          <ion-icon slot="icon-only" [name]="mostrarPasswordActual ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+        <ion-input
+          [formControl]="$any(form.get('passwordActual'))"
+          [type]="mostrarPasswordActual ? 'text' : 'password'"
+          autocomplete="current-password">
+        </ion-input>
+        <ion-button
+          slot="end"
+          fill="clear"
+          class="password-toggle"
+          type="button"
+          (click)="togglePasswordActualVisibility()"
+          [attr.aria-label]="mostrarPasswordActual ? 'Ocultar contraseña actual' : 'Mostrar contraseña actual'">
+          <ion-icon
+            slot="icon-only"
+            [name]="mostrarPasswordActual ? 'eye-off-outline' : 'eye-outline'">
+          </ion-icon>
         </ion-button>
         <ion-note slot="error">Debes ingresar tu contraseña actual</ion-note>
       </ion-item>
@@ -74,13 +140,21 @@
 
     <section class="theme-toggle-card">
       <div class="theme-toggle-info">
-        <ion-icon [name]="themeService.esModoOscuro ? 'moon-outline' : 'sunny-outline'" class="theme-icon" [class.dark]="themeService.esModoOscuro"></ion-icon>
+        <ion-icon
+          [name]="themeService.esModoOscuro ? 'moon-outline' : 'sunny-outline'"
+          class="theme-icon"
+          [class.dark]="themeService.esModoOscuro">
+        </ion-icon>
         <div>
           <strong>{{ themeService.esModoOscuro ? 'Modo oscuro' : 'Modo claro' }}</strong>
           <span>Personaliza la apariencia de la app.</span>
         </div>
       </div>
-      <ion-toggle [checked]="themeService.esModoOscuro" (ionChange)="toggleTema()" aria-label="Alternar tema claro/oscuro"></ion-toggle>
+      <ion-toggle
+        [checked]="themeService.esModoOscuro"
+        (ionChange)="toggleTema()"
+        aria-label="Alternar tema claro/oscuro">
+      </ion-toggle>
     </section>
 
     <section class="theme-toggle-card biometric-toggle-card" [class.disabled]="!biometriaDisponible">
@@ -88,7 +162,9 @@
         <ion-icon name="finger-print-outline" class="theme-icon biometric-icon"></ion-icon>
         <div>
           <strong>{{ biometriaActiva ? 'Biometría activa' : 'Inicio con biometría' }}</strong>
-          <span>{{ biometriaDisponible ? 'Permite entrar con huella o bloqueo del dispositivo.' : 'Configura una huella o PIN en Android para activar esta opción.' }}</span>
+          <span>
+            {{ biometriaDisponible ? 'Permite entrar con huella o bloqueo del dispositivo.' : 'Configura una huella o PIN en Android para activar esta opción.' }}
+          </span>
         </div>
       </div>
       <ion-toggle
@@ -109,4 +185,76 @@
       Cerrar sesión
     </ion-button>
   </main>
+
+  <ion-modal
+    class="photo-crop-modal"
+    [isOpen]="cropModalAbierto"
+    [backdropDismiss]="false"
+    (didDismiss)="cerrarRecorteFoto()">
+    <ng-template>
+      <ion-header class="ion-no-border">
+        <ion-toolbar class="crop-toolbar">
+          <ion-buttons slot="start">
+            <ion-button fill="clear" (click)="cerrarRecorteFoto()" aria-label="Cancelar recorte">
+              <ion-icon slot="icon-only" name="close-outline"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+
+          <ion-title>Ajustar foto</ion-title>
+
+          <ion-buttons slot="end">
+            <ion-button fill="clear" (click)="guardarRecorteFoto()">Usar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="crop-content">
+        <section class="crop-panel">
+          <p class="mw-kicker">Foto de perfil</p>
+          <h2>Elige el encuadre</h2>
+          <p class="crop-help">
+            Arrastra la imagen y usa el zoom para seleccionar la parte que quieres mostrar.
+          </p>
+
+          <div
+            class="crop-stage"
+            [class.dragging]="arrastrandoFoto"
+            (pointerdown)="iniciarArrastreFoto($event)"
+            (pointermove)="moverArrastreFoto($event)"
+            (pointerup)="terminarArrastreFoto($event)"
+            (pointercancel)="terminarArrastreFoto($event)"
+            (pointerleave)="terminarArrastreFoto($event)">
+            <img
+              *ngIf="fotoTemporalDataUrl"
+              class="crop-image"
+              [src]="fotoTemporalDataUrl"
+              alt="Foto seleccionada para recortar"
+              draggable="false"
+              (load)="onImagenRecorteCargada($event)"
+              [style.transform]="'translate(calc(-50% + ' + cropOffsetX + 'px), calc(-50% + ' + cropOffsetY + 'px)) scale(' + cropZoom + ')'" />
+
+            <div class="crop-mask"></div>
+            <div class="crop-frame"></div>
+          </div>
+
+          <div class="crop-controls">
+            <div class="crop-control-label">
+              <ion-icon name="remove-outline"></ion-icon>
+              <span>Zoom</span>
+              <ion-icon name="add-outline"></ion-icon>
+            </div>
+
+            <ion-range
+              min="1"
+              max="3"
+              step="0.01"
+              [value]="cropZoom"
+              (ionInput)="onZoomRecorteChange($event)"
+              aria-label="Zoom de foto de perfil">
+            </ion-range>
+          </div>
+        </section>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>
